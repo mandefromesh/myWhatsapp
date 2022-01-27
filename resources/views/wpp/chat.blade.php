@@ -128,10 +128,11 @@
         */
         $(".users-group-cell-frame").on("click",function(){
             var userId = $(this).attr("data-userid");
+            var userSrializeId = $(this).attr("data-userserialized");
             var isGroup = $(this).attr("data-isgroup");
             var userName = $(this).find(".user-name-txt").text();
             var userImg = $(this).find(".user-real-img").attr("src");
-            console.log(userId, isGroup)
+            console.log(userSrializeId, isGroup)
             //avater-img-container
             if(userImg == "" || userImg === undefined || userImg == null){
                 if($(".main-head-img-wrapper .avater-img-container img").length > 0){
@@ -152,7 +153,7 @@
             $(".main-head-user-name").html("<span class='user-name-txt'>" + userName + "</span>");
 
             //get messages
-            getMessages(userId, isGroup);
+            getMessages(userSrializeId, isGroup);
         })
     });
 

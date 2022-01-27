@@ -235,19 +235,19 @@ class WppconnectController extends Controller
         $session = session('session');
         $token = session('token');
         //?isGroup=false&includeMe=true&includeNotifications=false
-        $userId = "";
-        $isgroup = 'true';
-        $incMe = 'true';
-        $incNotif = 'false';
+        $userId = $request->input('user_id');
+        $isgroup = ($request->input('is_group') == 'yes')?true:false;
+        $incMe = 1;
+        $incNotif = 'true';
 
-        return response()->json(array(
-            'userid'=> $request->input('user_id'),
-            'isGroup'=> $request->input('is_group')
-        ), 200);
+        // return response()->json(array(
+        //     'userid'=> $request->input('user_id'),
+        //     'isGroup'=> $request->input('is_group')
+        // ), 200);
 
 
-
-        $to = "/api/$session/all-messages-in-chat/$userId?isGroup=$isgroup&includeMe=$incMe&includeNotifications=$incNotif";
+            ///$userId?isGroup=$isgroup&includeMe=$incMe&includeNotifications=$incNotif
+        $to = "/api/$session/all-chats-with-messages";
         if($token && $session && session('init')){
             Wppconnect::make($url);
             $response = Wppconnect::to($to)->withHeaders([
@@ -255,12 +255,30 @@ class WppconnectController extends Controller
             ])->asJson()->get();
             $response = json_decode($response->getBody()->getContents(),true);
         }
+        $chatMsgs = "";
+        if($response['status'] == "success"){
+            $responseArr = $response['response'];
+            foreach($responseArr as $responseData){
+                if($responseData['id'] == $userId){
+                    $chatMsgs = $responseData;
+                    break;
+                }
+            }
+        }
+            //
+        // $to = "/api/$session/load-messages-in-chat/$userId";
+        // if($token && $session && session('init')){
+        //     Wppconnect::make($url);
+        //     $response = Wppconnect::to($to)->withHeaders([
+        //         'Authorization' => 'Bearer '.$token
+        //     ])->asJson()->get();
+        //     $response = json_decode($response->getBody()->getContents(),true);
+        // }
         
-        
-        $chats_md5 = "";// md5(json_encode($response));
+        $chats_md5 = md5(json_encode($chatMsgs));
 
         return response()->json(array(
-            'response'=> $response,
+            'response'=> $chatMsgs,
             'chats_md5' => $chats_md5
         ), 200);
     }
