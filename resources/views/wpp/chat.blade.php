@@ -4,6 +4,7 @@
 @section('users_list')
 <div aria-label="Chat list"  class="users-group-list-container users-group-list-container-mrg" role="grid"
     aria-rowcount="{{count($allChats)}}" style="height: 216px;">
+    <input type="hidden" id="chat-data-hash" value="{{$chats_md5}}" />
     <div class="users-group-list-item"
                 style="z-index: 0; transition: none 0s ease 0s; height: 72px; transform: translateY(0px);">
 
@@ -12,6 +13,8 @@
             <!-- user/groups item 1-->
             <div tabindex="0" aria-selected="true" role="row">
                 <div data-testid="cell-frame-container"
+                    data-userid="{{$chat['id']['user']}}"
+                    data-userserialized="{{$chat['id']['_serialized']}}" 
                     class="users-group-cell-frame cell-frame">
                     <div class="users-group-img-wrapper">
                         <div class="users-group-img-container">
@@ -122,7 +125,30 @@
             var dataId = "true_120363020803854156@g.us_3EB0A819A9C7FD098D2D";
             $(".message-out[data-id='" + dataId +"'] .msg-text-read-status span").removeClass("msg-text-read-color");
         */
-
+        $(".users-group-cell-frame").on("click",function(){
+            var userId = $(this).attr("data-userid");
+            var userName = $(this).find(".user-name-txt").text();
+            var userImg = $(this).find(".user-real-img").attr("src");
+            console.log(userId)
+            //avater-img-container
+            if(userImg == "" || userImg === undefined || userImg == null){
+                if($(".main-head-img-wrapper .avater-img-container img").length > 0){
+                    $(".main-head-img-wrapper .avater-img-container img").remove();
+                }
+            }else{
+                if($(".main-head-img-wrapper .avater-img-container img").length > 0){
+                    $(".main-head-img-wrapper .avater-img-container img").attr("src", userImg);
+                }else{
+                    $("<img>",{
+                        src : userImg,
+                        draggable: false,
+                        class: "user-real-img user-real-img-opcty-1 vsblty-vsbl"
+                    }).appendTo(".main-head-img-wrapper .avater-img-container");
+                }
+            }
+            //main-head-user-name
+            $(".main-head-user-name").html("<span class='user-name-txt'>" + userName + "</span>");
+        })
     });
 
 

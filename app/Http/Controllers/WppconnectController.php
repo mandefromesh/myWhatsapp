@@ -151,15 +151,15 @@ class WppconnectController extends Controller
         $conn_status = $this->checkWppSessionStatus($this->url, session('session') , session('token'));
         
         if($conn_status['status'] != true){
-            //dd($conn_status);
             //return redirect()->route("home");
             session([
                 'init' => false,
                 'session' => '',
                 'token' => ''
             ]);
-            $this->index();
+            return $this->index();
         }
+        //dd($conn_status);
         session(['init' => true]);
         $all_chats = $this->getAllChats();
         //dd($all_chats);
@@ -167,9 +167,11 @@ class WppconnectController extends Controller
         if($all_chats != "" && $all_chats['status'] == 'success'){
             $chatsArr = $all_chats['response'];
         }
+        $chats_md5 = md5(json_encode($all_chats));
         $data = array(
             'title' => 'All Chats',
-            'allChats' => $chatsArr
+            'allChats' => $chatsArr,
+            'chats_md5' => $chats_md5
         );
         //get all sers/group list - TODO;;
         return view('wpp.chat')->with($data);
@@ -210,9 +212,12 @@ class WppconnectController extends Controller
             $conn_status = $this->checkWppSessionStatus($this->url, session('session') , session('token'));
         }
         
+        $chats_md5 = md5(json_encode($response));
+
         return response()->json(array(
             'response'=> $response,
-            'conn_status' => $conn_status
+            'conn_status' => $conn_status,
+            'chats_md5' => $chats_md5
         ), 200);
         //return json_encode($response);
     }
