@@ -14,6 +14,7 @@
             <div tabindex="0" aria-selected="true" role="row">
                 <div data-testid="cell-frame-container"
                     data-userid="{{$chat['id']['user']}}"
+                    data-isgroup="{{($chat['isGroup'])?'yes':'no'}}" 
                     data-userserialized="{{$chat['id']['_serialized']}}" 
                     class="users-group-cell-frame cell-frame">
                     <div class="users-group-img-wrapper">
@@ -127,9 +128,10 @@
         */
         $(".users-group-cell-frame").on("click",function(){
             var userId = $(this).attr("data-userid");
+            var isGroup = $(this).attr("data-isgroup");
             var userName = $(this).find(".user-name-txt").text();
             var userImg = $(this).find(".user-real-img").attr("src");
-            console.log(userId)
+            console.log(userId, isGroup)
             //avater-img-container
             if(userImg == "" || userImg === undefined || userImg == null){
                 if($(".main-head-img-wrapper .avater-img-container img").length > 0){
@@ -148,45 +150,35 @@
             }
             //main-head-user-name
             $(".main-head-user-name").html("<span class='user-name-txt'>" + userName + "</span>");
+
+            //get messages
+            getMessages(userId, isGroup);
         })
     });
 
 
 
-        // function getQrCode() {
-        //     $.ajaxSetup({
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         }
-        //     });
+    function getMessages(userId, isGroup) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
-        //     $.ajax({
-        //         type:'POST',
-        //         url:'/wpp/getqrcode',
-        //         // data:'_token = <?php echo csrf_token() ?>',
-        //         success:function(data) {
-        //             //$("#msg").html(data.msg);
-        //             //console.log(data);
-        //             if(data != "" && data !== null){
-        //                 try{
-        //                     var jsonData = data.response;//JSON.parse(data)
-        //                     var data_status = jsonData.status;
-        //                     var qrcode = jsonData.qrcode;
-        //                     //console.log("conn_status: ", data.conn_status);
-        //                     if(data.conn_status && data.conn_status.status == true){
-        //                         window.location.href = "/home";
-        //                     }else{
-        //                         if(data_status == "QRCODE"){
-        //                             $("#qrcode-container img").attr("src", qrcode)
-        //                         }
-        //                     }
-        //                 }catch(e){
-        //                     console.log("error parsing data: ", JSON.stringify(e));
-        //                 }
-        //             }
-        //         }
-        //     });
-        // }
+        $.ajax({
+            type:'POST',
+            url:'/wpp/chatmsg',
+            data: {
+                user_id : userId,
+                is_group: isGroup
+            },
+            success:function(data) {
+                //$("#msg").html(data.msg);
+                console.log(data);
+                
+            }
+        });
+    }
         // getQrCode();
         // setInterval(function () {
         //     getQrCode();

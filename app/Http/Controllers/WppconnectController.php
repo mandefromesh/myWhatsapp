@@ -221,6 +221,52 @@ class WppconnectController extends Controller
         ), 200);
         //return json_encode($response);
     }
+
+
+    /**
+     * Show the qr code for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */ 
+    public function getAllMessagesInChat(Request $request)
+    {
+        $response = "";
+        $url = $this->url;
+        $session = session('session');
+        $token = session('token');
+        //?isGroup=false&includeMe=true&includeNotifications=false
+        $userId = "";
+        $isgroup = 'true';
+        $incMe = 'true';
+        $incNotif = 'false';
+
+        return response()->json(array(
+            'userid'=> $request->input('user_id'),
+            'isGroup'=> $request->input('is_group')
+        ), 200);
+
+
+
+        $to = "/api/$session/all-messages-in-chat/$userId?isGroup=$isgroup&includeMe=$incMe&includeNotifications=$incNotif";
+        if($token && $session && session('init')){
+            Wppconnect::make($url);
+            $response = Wppconnect::to($to)->withHeaders([
+                'Authorization' => 'Bearer '.$token
+            ])->asJson()->get();
+            $response = json_decode($response->getBody()->getContents(),true);
+        }
+        
+        
+        $chats_md5 = "";// md5(json_encode($response));
+
+        return response()->json(array(
+            'response'=> $response,
+            'chats_md5' => $chats_md5
+        ), 200);
+    }
+
+
+
     /**
      * Show the qr code for creating a new resource.
      *
