@@ -93,30 +93,49 @@
 @endsection
 
 
-
-
 @section('chat_items')
-<!-- <H1>Heloo</H1> -->
+<div tabindex="-1" class="chat-container-region" data-tab="8" role="region">
+    <!-- chat-items -->
+    <div tabindex="-1" class="chat-item focusable-list-item message-in" data-id="E341BD681964225D1C9EC89C52CEE05B">
+        <span></span>
+        <div class="chat-item-content chat-item-wide chat-item-shape">
+            <span data-testid="tail-out" data-icon="tail-out" class="chat-item-tail"><span>
+                <div class="chat-msg-container chat-msg-container-shadow">
+                    <div class="chat-msg-content">
+                        <div class="msg-sender-details msg-sender-color " role="">
+                            <span dir="auto" class="msg-sender-name msg-sender-cursor text-visibility">
+                                972527009894@c.us
+                            </span>
+                        </div>
+                        <div class="msg-text-container copyable-text" data-pre-plain-text="">
+                            <div class="msg-text-content">
+                                <span dir="rtl" class="text-visibility selectable-text copyable-text">
+                                    <span>ממ</span>
+                                </span>
+                                <span class="msg-text-foot-spacer"></span>
+                            </div>
+                        </div>
+                        <div class="msg-text-foot">
+                            <div class="msg-time-container" data-testid="msg-meta">
+                                <span class="msg-time-text" dir="auto">1641336143</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 
 @section('foot_script')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script type="text/javascript">
+    var currnt_chat_id = "";
+    var currnet_chat_hash = "";
+    var msg_ary = [];
     $(document).ready(function () {
-        var svg_tail_out_ltr = '<svg viewBox="0 0 8 13" width="8" height="13"><path opacity=".13" d="M5.188 1H0v11.193l6.467-8.625C7.526 2.156 6.958 1 5.188 1z"></path><path fill="currentColor" d="M5.188 0H0v11.193l6.467-8.625C7.526 1.156 6.958 0 5.188 0z"></path></svg>';
-        var svg_tail_out_rtl = '<svg viewBox="0 0 8 13" width="8" height="13"><path opacity=".13" fill="#0000000" d="M1.533 3.568L8 12.193V1H2.812C1.042 1 .474 2.156 1.533 3.568z" ></path><path fill="currentColor" d="M1.533 2.568L8 11.193V0H2.812C1.042 0 .474 1.156 1.533 2.568z"></path></svg>';
-        //var svg_tail_in_ltr =   '<svg viewBox="0 0 8 13" width="8" height="13"><path opacity=".13" fill="#0000000" d="M1.533 3.568L8 12.193V1H2.812C1.042 1 .474 2.156 1.533 3.568z"></path><path fill="currentColor" d="M1.533 2.568L8 11.193V0H2.812C1.042 0 .474 1.156 1.533 2.568z"></path></svg>';
-        //var svg_tail_in_rtl =   '<svg viewBox="0 0 8 13" width="8" height="13"><path opacity=".13" d="M5.188 1H0v11.193l6.467-8.625C7.526 2.156 6.958 1 5.188 1z"></path><path fill="currentColor" d="M5.188 0H0v11.193l6.467-8.625C7.526 1.156 6.958 0 5.188 0z"></path></svg >';
-
-        var doc_dir = $("html").attr("dir");
-        if (doc_dir == "rtl" || doc_dir == "RTL") {
-            $(".message-out .chat-item-content .chat-item-tail").html(svg_tail_out_rtl);
-            $(".message-in .chat-item-content .chat-item-tail").html(svg_tail_out_ltr);
-        } else {
-            $(".message-out .chat-item-content .chat-item-tail").html(svg_tail_out_ltr);
-            $(".message-in .chat-item-content .chat-item-tail").html(svg_tail_out_rtl);
-        }
 
         var sent_msg_clock_stt = '<span data-testid="msg-time" aria-label=" Pending " data-icon="msg-time" class=""><svg viewBox="0 0 16 15" width="16" height="15" class=""><path fill="currentColor" d="M9.75 7.713H8.244V5.359a.5.5 0 0 0-.5-.5H7.65a.5.5 0 0 0-.5.5v2.947a.5.5 0 0 0 .5.5h.094l.003-.001.003.002h2a.5.5 0 0 0 .5-.5v-.094a.5.5 0 0 0-.5-.5zm0-5.263h-3.5c-1.82 0-3.3 1.48-3.3 3.3v3.5c0 1.82 1.48 3.3 3.3 3.3h3.5c1.82 0 3.3-1.48 3.3-3.3v-3.5c0-1.82-1.48-3.3-3.3-3.3zm2 6.8a2 2 0 0 1-2 2h-3.5a2 2 0 0 1-2-2v-3.5a2 2 0 0 1 2-2h3.5a2 2 0 0 1 2 2v3.5z"></path></svg></span>';
         var read_stt_check_elm = '<span data-testid="msg-check" aria-label=" Sent " data-icon="msg-check" class=""><svg viewBox="0 0 16 15" width="16" height="15" class=""><path fill="currentColor" d="M10.91 3.316l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z"></path></svg></span>';
@@ -176,9 +195,148 @@
             success:function(data) {
                 //$("#msg").html(data.msg);
                 console.log(data);
+                if(data.status == "success"){
+                    var new_hash = data.chats_md5; 
+                    if(currnt_chat_id != userId || currnet_chat_hash != new_hash){
+                        setMsgs(data.response.msgs, isGroup, userId, new_hash);
+                    }
+                }
                 
             }
         });
+    }
+
+    function setMsgs(msgs, isGroup, userId, new_hash){
+        var writMsgArr;
+        var isAppend = false;
+        if(currnt_chat_id != userId){
+            currnt_chat_id = userId;
+            writMsgArr = msgs;
+            $(".chat-container-region").html("");
+        }
+        if(currnet_chat_hash != new_hash){
+            currnet_chat_hash = new_hash;
+            if(msg_ary.length > 0){
+                var diff = $(msgs).not(msg_ary).get();
+                //console.log(diff)
+                writMsgArr = diff;
+                isAppend = true;
+            }else{
+                writMsgArr = msgs;
+            }
+        }
+        msg_ary = msgs;
+        //console.log(writMsgArr);
+        var i = 0, len = writMsgArr.length;
+        var msg_body_html = "";
+        while (i < len) {
+            var msg = writMsgArr[i];
+            if(msg.type == "chat"){
+                //show only chat
+                var msg_html = createMsgHtml(msg);
+                console.log(msg_html);
+                if(isAppend){
+                    $(".chat-container-region").append(msg_html)
+                }else{
+                    msg_body_html += msg_html;
+                }
+            }
+            i++
+        }
+        if(!isAppend){
+            $(".chat-container-region").html(msg_body_html)
+        }
+        setMsgsTail();
+
+    }
+    function createMsgHtml(msg){
+        var in_or_out = 'message-in';
+        var tail_data = "tail-out";
+        var html = "";
+        //var tail_class = "chat-item-tail"
+        if(msg.id.fromMe){
+            in_or_out = 'message-out';
+            tail_data = 'tail-in';
+        }
+        html = '<div tabindex="-1" class="chat-item focusable-list-item ' + in_or_out +  '"' + 
+            'data-id="' + msg.id.id + '">' + 
+            '<span></span>' + //?
+            '<div class="chat-item-content chat-item-wide chat-item-shape">'; 
+            if(!msg.quotedMsg){
+                html += '<span data-testid="'+tail_data+'" data-icon="'+tail_data+'" class="chat-item-tail"></span>'; 
+            }
+            html += '<div class="chat-msg-container chat-msg-container-shadow">' + 
+            '<div class="chat-msg-content">' + 
+            
+            '<div class="msg-sender-details msg-sender-color " role="">' +
+            '<span dir="auto" class="msg-sender-name msg-sender-cursor text-visibility">' + 
+            msg.from + 
+            '</span>' + 
+            '</div>' + 
+            '<div class="msg-text-container copyable-text" data-pre-plain-text="">';
+            
+            if(msg.quotedMsg && msg.quotedMsg.type == "chat"){
+                //msg.quotedParticipant
+                //msg.quotedStanzaID
+                //msg.quotedMsg.type
+                //msg.quotedMsg.body
+                html += '<div class="relay-container">' +
+                '<div class="relay-container-width">' + 
+                '<div class="relay-container-btn-role" role="button">' + 
+                '<span class="relay-bg-color-1 relay-bg-flex"></span>' + 
+                '<div class="relay-msg-wrapper">' + 
+                '<div class="relay-chat-msg-content">' + 
+                '<div class="msg-sender-details msg-sender-color" role="button">' + 
+                '<span dir="auto" class="msg-sender-name text-visibility">' + 
+                msg.quotedParticipant + 
+                '</span>' + 
+                '</div>' + 
+                '<div class="relay-msg-text-content" dir="rtl" role="button">' + 
+                '<span dir="auto" class="quoted-mention text-visibility">' + 
+                msg.quotedMsg.body + 
+                '</span>' + 
+                '</div></div></div></div></div></div>';
+            }
+ 
+            html += '<div class="msg-text-content">' + 
+            '<span dir="rtl" class="text-visibility selectable-text copyable-text">' + 
+            '<span>' + 
+            msg.body + 
+            '</span>' + 
+            '</span>' + 
+            '<span class="msg-text-foot-spacer"></span>' + 
+            '</div></div>' + 
+            '<div class="msg-text-foot">' + 
+            '<div class="msg-time-container" data-testid="msg-meta">' + 
+            '<span class="msg-time-text" dir="auto">' + 
+            msg.t + 
+            '</span>' + 
+            '</div></div></div>' + 
+            //'<span><!-- on hover item create arrow down button --></span>' + 
+            '</div></div></div></div>';
+
+        //msg.body
+        //msg.from
+        //msg.t //> timestamp
+        //msg.id.fromMe
+        //msg.id.id
+        //msg.id._serialized
+        return html;
+    }
+    function setMsgsTail(){
+        var svg_tail_out_ltr = '<svg viewBox="0 0 8 13" width="8" height="13"><path opacity=".13" d="M5.188 1H0v11.193l6.467-8.625C7.526 2.156 6.958 1 5.188 1z"></path><path fill="currentColor" d="M5.188 0H0v11.193l6.467-8.625C7.526 1.156 6.958 0 5.188 0z"></path></svg>';
+        var svg_tail_out_rtl = '<svg viewBox="0 0 8 13" width="8" height="13"><path opacity=".13" fill="#0000000" d="M1.533 3.568L8 12.193V1H2.812C1.042 1 .474 2.156 1.533 3.568z" ></path><path fill="currentColor" d="M1.533 2.568L8 11.193V0H2.812C1.042 0 .474 1.156 1.533 2.568z"></path></svg>';
+        //var svg_tail_in_ltr =   '<svg viewBox="0 0 8 13" width="8" height="13"><path opacity=".13" fill="#0000000" d="M1.533 3.568L8 12.193V1H2.812C1.042 1 .474 2.156 1.533 3.568z"></path><path fill="currentColor" d="M1.533 2.568L8 11.193V0H2.812C1.042 0 .474 1.156 1.533 2.568z"></path></svg>';
+        //var svg_tail_in_rtl =   '<svg viewBox="0 0 8 13" width="8" height="13"><path opacity=".13" d="M5.188 1H0v11.193l6.467-8.625C7.526 2.156 6.958 1 5.188 1z"></path><path fill="currentColor" d="M5.188 0H0v11.193l6.467-8.625C7.526 1.156 6.958 0 5.188 0z"></path></svg >';
+
+        var doc_dir = $("html").attr("dir");
+        if (doc_dir == "rtl" || doc_dir == "RTL") {
+            $(".message-out .chat-item-content .chat-item-tail").html(svg_tail_out_rtl);
+            $(".message-in .chat-item-content .chat-item-tail").html(svg_tail_out_ltr);
+        } else {
+            $(".message-out .chat-item-content .chat-item-tail").html(svg_tail_out_ltr);
+            $(".message-in .chat-item-content .chat-item-tail").html(svg_tail_out_rtl);
+        }
     }
         // getQrCode();
         // setInterval(function () {

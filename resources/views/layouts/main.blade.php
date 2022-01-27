@@ -248,11 +248,8 @@
                                     </div>
                                     <div class="chat-container-spacer"></div>
 
-                                    <div tabindex="-1" class="chat-container-region" data-tab="8" role="region">
-                                        <!-- chat-items -->
-                                        @yield('chat_items')
+                                    @yield('chat_items')
 
-                                    </div>
                                     <div hidden="" style="display: none;"></div>
                                 </div>
                             </div>

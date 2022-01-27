@@ -256,11 +256,13 @@ class WppconnectController extends Controller
             $response = json_decode($response->getBody()->getContents(),true);
         }
         $chatMsgs = "";
+        $status = "fail";
         if($response['status'] == "success"){
             $responseArr = $response['response'];
             foreach($responseArr as $responseData){
                 if($responseData['id'] == $userId){
-                    $chatMsgs = $responseData;
+                    $chatMsgs= $responseData;
+                    $status = "success";
                     break;
                 }
             }
@@ -279,6 +281,7 @@ class WppconnectController extends Controller
 
         return response()->json(array(
             'response'=> $chatMsgs,
+            'status' => $status,
             'chats_md5' => $chats_md5
         ), 200);
     }
