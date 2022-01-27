@@ -16,7 +16,7 @@ return [
 		 * Secret Key
 		 * See: https://github.com/wppconnect-team/wppconnect-server#secret-key
 		 */
-		'secret_key' => 'TADELEMEHSESHAISTHEKING'
+		'secret_key' => ''
 	]
 
 ];
