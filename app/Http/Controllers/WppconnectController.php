@@ -148,6 +148,9 @@ class WppconnectController extends Controller
      */
     public function chat()
     {
+        if(!session('token') && !session('session')){
+            return $this->index();
+        }
         $conn_status = $this->checkWppSessionStatus($this->url, session('session') , session('token'));
         
         if($conn_status['status'] != true){

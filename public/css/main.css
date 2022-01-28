@@ -1500,7 +1500,7 @@ html[dir=rtl] .msg-text-content {
     position: relative;
     overflow-wrap: break-word;
     white-space: pre-wrap;
-    line-height: 8px;
+    line-height: 14px;/*8px;*/
     margin-top: -13px;
 }
 
@@ -1620,13 +1620,13 @@ html[dir=ltr] .chat-msg-content {
 }
 
 
-
+/* 
 .selectable-text {
     -webkit-user-select: text;
     -moz-user-select: text;
     -ms-user-select: text;
     user-select: text;
-}
+} */
 
 .msg-text-foot-width {
     width: 72px;
@@ -1980,12 +1980,12 @@ html[dir] .textbox-container .textbox-input {
     user-select: text;
 }
 
-.selectable-text {
+/* .selectable-text {
     -webkit-user-select: text;
     -moz-user-select: text;
     -ms-user-select: text;
     user-select: text;
-}
+} */
 
 /* Voice message button */
 html[dir] .voice-msg-btn-wrapper {
