@@ -305,7 +305,7 @@ class WppconnectController extends Controller
         $token = session('token');
         
         $send_to = $request->input('send_to');
-        $isgroup = $request->input('is_group');
+        $isgroup = ($request->input('is_group') == "yes")?true:false;
         $msg_body = $request->input('msg_body');
         $repaly_msg_id = $request->input('repaly_msg_id');
         
@@ -320,7 +320,7 @@ class WppconnectController extends Controller
             $endUrl = "send-reply";
             $bodyArr["messageId"] = $repaly_msg_id;
         }
-
+    
         $to = "/api/$session/$endUrl";
         if($token && $session && session('init')){
             Wppconnect::make($url);
@@ -329,6 +329,7 @@ class WppconnectController extends Controller
             ])->asJson()->post();
             $response = json_decode($response->getBody()->getContents(),true);
         }
+        
         return response()->json(array(
             'response'=> $response
         ), 200);

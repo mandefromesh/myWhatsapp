@@ -105,7 +105,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script type="text/javascript">
     var currnt_chat_id = "";
-    var is_current_group = false;
+    var is_current_group = "no";
     var currnet_chat_hash = "";
     var msg_ary = [];
     var intervalId;
@@ -126,7 +126,7 @@
             var isGroup = $(this).attr("data-isgroup");
             var userName = $(this).find(".user-name-txt").text();
             var userImg = $(this).find(".user-real-img").attr("src");
-            is_current_group = (isGroup == "yes")?true:false;
+            is_current_group = isGroup;
             console.log(userSrializeId, isGroup)
             //avater-img-container
             if(userImg == "" || userImg === undefined || userImg == null){
