@@ -148,19 +148,45 @@
             //get messages
             //getMessages(userSrializeId, isGroup);
             setTimer(userSrializeId, isGroup);
+            $(".main-text-typing-area").show();
         });
 
 
 
-        $(".msg-text-write-area .textbox-input").on("input", function(){
-            console.log($(this).text())
+        $(".msg-text-write-area .textbox-input").on("input", function(e){
             if($(this).text() != ""){
                 $(".msg-text-write-area .textbox-placeholder").hide();
             }else{
-
                 $(".msg-text-write-area .textbox-placeholder").show();
             }
+
         })
+        $(".msg-text-write-area .textbox-input").keydown(function(e){
+            
+            // var dummy = "\xAD";
+            // if (e.keyCode == 13) {
+            //     if (e.altKey) {
+            //         var val = $(this).text();
+            //         $(this).focus();
+            //         console.log("alt + enter - end line")
+            //         $(this).text(val + "\r\n" + dummy);
+            //         return true;
+            //     }
+            //     console.log("only enter - send msg")
+            //     return false;
+            // }
+
+
+            if (e.keyCode == 13) {
+                if (e.altKey) {
+                    console.log("enter + alt - send msg")
+                }
+                //return false;
+            }
+            
+        })
+
+
         //
         $(".chat-container").on("scroll", function(){
             //console.log("heigth: ", $(this).scrollTop() , this.scrollHeight - $(this).height())

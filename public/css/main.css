@@ -1754,11 +1754,6 @@ html[dir=rtl] .relay-msg-wrapper {
 
 /* ++++++++++++++++++++++++++++++++ */
 /* main foot area - text writer area */
-html[dir] .main-text-typing-area {
-    padding: 0;
-    background-color: rgb(240, 240, 240);
-    /*var(--compose-panel-background);*/
-}
 
 .main-text-typing-area {
     position: relative;
@@ -1768,9 +1763,15 @@ html[dir] .main-text-typing-area {
     order: 3;
     width: 100%;
     min-height: 62px;
+    display: none;
 }
 
 
+html[dir] .main-text-typing-area {
+    padding: 0;
+    background-color: rgb(240, 240, 240);
+    /*var(--compose-panel-background);*/
+}
 
 .main-text-typing-container {
     display: flex;
