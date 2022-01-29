@@ -105,6 +105,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script type="text/javascript">
     var currnt_chat_id = "";
+    var is_current_group = false;
     var currnet_chat_hash = "";
     var msg_ary = [];
     var intervalId;
@@ -125,6 +126,7 @@
             var isGroup = $(this).attr("data-isgroup");
             var userName = $(this).find(".user-name-txt").text();
             var userImg = $(this).find(".user-real-img").attr("src");
+            is_current_group = (isGroup == "yes")?true:false;
             console.log(userSrializeId, isGroup)
             //avater-img-container
             if(userImg == "" || userImg === undefined || userImg == null){
@@ -149,6 +151,7 @@
             //getMessages(userSrializeId, isGroup);
             setTimer(userSrializeId, isGroup);
             $(".main-text-typing-area").show();
+            $("#main_msg_textbox").html("");
         });
 
 
@@ -161,26 +164,32 @@
             }
 
         })
-        $(".msg-text-write-area .textbox-input").keydown(function(e){
-            
-            // var dummy = "\xAD";
-            // if (e.keyCode == 13) {
-            //     if (e.altKey) {
-            //         var val = $(this).text();
-            //         $(this).focus();
-            //         console.log("alt + enter - end line")
-            //         $(this).text(val + "\r\n" + dummy);
-            //         return true;
-            //     }
-            //     console.log("only enter - send msg")
-            //     return false;
-            // }
+        $("#main_msg_textbox").keydown(function(event){
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            //var dummy = "\xAD";
 
+            if (keycode == 13) {
+                if (event.altKey) {
+        
+                    // var el = document.getElementById("main_msg_textbox")
+                    // var range = document.createRange()
+                    // var sel = window.getSelection()
 
-            if (e.keyCode == 13) {
-                if (e.altKey) {
+                    // var val = $(this).text();
+                    // $(this).text(val + "\r\n" + dummy);
+                    // var pos = $(this).text().lastIndexOf(dummy);
+                    
+                    // range.setStart(el.childNodes[0], pos)
+                    // range.collapse(true)
+                    
+                    // sel.removeAllRanges()
+                    // sel.addRange(range)
+                    sendTextMsg();
+
                     console.log("enter + alt - send msg")
+                    return true;
                 }
+                //console.log("only enter")
                 //return false;
             }
             
@@ -270,9 +279,10 @@
 
                 console.log("diff", diff)
 
-
-                writMsgArr = diff;
-                isAppend = true;
+                if(diff != msg_ary){
+                    writMsgArr = diff;
+                    isAppend = true;
+                }
             }else{
                 writMsgArr = msgs;
             }
@@ -408,6 +418,35 @@
 
     }
 
+    function sendTextMsg(){
+        //main_msg_textbox
+        let txtMsg = $("#main_msg_textbox").text();
+        //var sendTo = currnt_chat_id;
+        console.log("send to:", currnt_chat_id, is_current_group);
+
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type:'POST',
+            url:'/wpp/sendmsg',
+            data: {
+                send_to : currnt_chat_id.replace(/[@c.us,@g.us]/g, ""),
+                is_group: is_current_group,
+                repaly_msg_id: "",
+                msg_body: txtMsg
+            },
+            success:function(data) {
+                console.log(data);
+                
+                
+            }
+        });
+    }
 
 </script>
 @endsection

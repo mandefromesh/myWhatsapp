@@ -291,6 +291,55 @@ class WppconnectController extends Controller
 
 
 
+
+    /**
+     * Show the qr code for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */ 
+    public function sendCahtMessage(Request $request)
+    {
+        $response = "";
+        $url = $this->url;
+        $session = session('session');
+        $token = session('token');
+        
+        $send_to = $request->input('send_to');
+        $isgroup = $request->input('is_group');
+        $msg_body = $request->input('msg_body');
+        $repaly_msg_id = $request->input('repaly_msg_id');
+        
+        $bodyArr = [
+            'phone' => $send_to,
+            'message' => $msg_body,
+            'isGroup' => $isgroup
+        ];
+
+        $endUrl = "send-message";
+        if($repaly_msg_id != ""){
+            $endUrl = "send-reply";
+            $bodyArr["messageId"] = $repaly_msg_id;
+        }
+
+        $to = "/api/$session/$endUrl";
+        if($token && $session && session('init')){
+            Wppconnect::make($url);
+            $response = Wppconnect::to($to)->withBody($bodyArr)->withHeaders([
+                'Authorization' => 'Bearer '.$token
+            ])->asJson()->post();
+            $response = json_decode($response->getBody()->getContents(),true);
+        }
+        return response()->json(array(
+            'response'=> $response
+        ), 200);
+
+    }
+
+
+
+
+
+
     /**
      * Show the qr code for creating a new resource.
      *

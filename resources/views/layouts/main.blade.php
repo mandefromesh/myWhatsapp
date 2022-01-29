@@ -302,7 +302,7 @@
                                                     <div tabindex="-1" class="textbox-container textbox">
                                                         <div class="textbox-placeholder" style="visibility: visible">
                                                             Type a message </div>
-                                                        <div title="Type a message" role="textbox"
+                                                        <div id="main_msg_textbox" title="Type a message" role="textbox"
                                                             class="textbox-input copyable-text selectable-text"
                                                             contenteditable="true" data-tab="9" dir="ltr"
                                                             spellcheck="true"></div>
