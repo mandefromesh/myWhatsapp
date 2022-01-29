@@ -258,7 +258,7 @@
                         <!-- <div class="VjtCX" style="height: 0px;"></div> -->
                         <!-- main foot area - text writer area -->
                         <footer class="main-text-typing-area">
-
+                            <!-- @yield('text_typing_area') -->
                             <div class="vsblty-vsbl copyable-area">
                                 <div>
                                     <span>

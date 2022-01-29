@@ -96,9 +96,9 @@
 @section('chat_items')
 <div tabindex="-1" class="chat-container-region" data-tab="8" role="region">
     <!-- chat-items -->
-    
 </div>
 @endsection
+
 
 
 @section('foot_script')
@@ -147,7 +147,20 @@
             //get messages
             //getMessages(userSrializeId, isGroup);
             setTimer(userSrializeId, isGroup);
+        });
+
+
+
+        $(".msg-text-write-area .textbox-input").on("input", function(){
+            console.log($(this).text())
+            if($(this).text() != ""){
+                $(".msg-text-write-area .textbox-placeholder").hide();
+            }else{
+
+                $(".msg-text-write-area .textbox-placeholder").show();
+            }
         })
+
     });
 
     function setTimer(userSrializeId, isGroup){
