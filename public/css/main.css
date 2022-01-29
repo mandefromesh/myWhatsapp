@@ -1196,19 +1196,20 @@ html[dir=rtl] .main-head-menu-area {
         } */
 
 html[dir=ltr] .page_down {
-    right: 11px;
+    right: 21px;
 }
 
 html[dir=rtl] .page_down {
-    left: 11px;
+    left: 21px;
 }
 
 .page_down {
     position: absolute;
     bottom: 17px;
-    z-index: 200;
+    z-index: 9999;
     display: inline-flex;
     flex-direction: column;
+    display: none;
 }
 
 /* .page_down_btn_geen {

@@ -228,24 +228,24 @@
                         <!-- main msg area -->
                         <div class="main-text-msg-area">
                             <div class="vsblty-vsbl copyable-area">
+                                <!-- page down button -->
+                                <div class="page_down">
+                                    <span>
+                                        <div role="button" tabindex="0" id = "page_down_btn"
+                                            class="page_down_btn_gray page_down_btn_geen" data-tab="7"
+                                            style="transform: scaleX(1) scaleY(1); opacity: 1;">
+                                            <!-- <span class="_38VQ8"></span> -->
+                                            <span data-testid="down" data-icon="down">
+                                                <svg viewBox="0 0 19 20" width="19" height="20" class="">
+                                                    <path fill="currentColor"
+                                                        d="M3.8 6.7l5.7 5.7 5.7-5.7 1.6 1.6-7.3 7.2-7.3-7.2 1.6-1.6z">
+                                                    </path>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                    </span>
+                                </div>
                                 <div class="chat-container" tabindex="0">
-                                    <!-- page down button -->
-                                    <div class="page_down">
-                                        <span>
-                                            <div role="button" tabindex="0"
-                                                class="page_down_btn_gray page_down_btn_geen" data-tab="7"
-                                                style="transform: scaleX(1) scaleY(1); opacity: 1;">
-                                                <!-- <span class="_38VQ8"></span> -->
-                                                <span data-testid="down" data-icon="down">
-                                                    <svg viewBox="0 0 19 20" width="19" height="20" class="">
-                                                        <path fill="currentColor"
-                                                            d="M3.8 6.7l5.7 5.7 5.7-5.7 1.6 1.6-7.3 7.2-7.3-7.2 1.6-1.6z">
-                                                        </path>
-                                                    </svg>
-                                                </span>
-                                            </div>
-                                        </span>
-                                    </div>
                                     <div class="chat-container-spacer"></div>
 
                                     @yield('chat_items')
