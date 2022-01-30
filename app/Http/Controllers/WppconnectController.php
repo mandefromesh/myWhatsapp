@@ -36,17 +36,9 @@ class WppconnectController extends Controller
     {
         
         $user = auth()->user();
-        //$user_session = $user->wpp_session;
-        //$user_token = $user->wpp_token;
-
-	    //# Function: Generated Token
-	    //# /api/:session/generate-token
-	
-        //Session::flush();
-        //session(['key' => 'value']);
-        //$val = session('key');
+        
         if((!session('token') && !session('session')) || ($user->wpp_token == "")){
-            $this->session = base64_encode(md5($user->email));
+            $this->session = md5($user->email);
             Wppconnect::make($this->url);
             $response = Wppconnect::to('/api/'.$this->session.'/'.$this->key.'/generate-token')->asJson()->post();
             $response = json_decode($response->getBody()->getContents(),true);
@@ -290,6 +282,38 @@ class WppconnectController extends Controller
     }
 
 
+    /**
+     * Show the qr code for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */ 
+    public function getMessageById($id)
+    {
+        //id =? true_120363020803854156@g.us_0BBFBE9C87651496021EAA6782EA08E4
+        //dd($id);
+        $response = "";
+        $url = $this->url;
+        $session = session('session');
+        $token = session('token');
+        // return response()->json(array(
+        //     'userid'=> $request->input('user_id'),
+        //     'isGroup'=> $request->input('is_group')
+        // ), 200);
+        $to = "/api/$session/get-media-by-message/$id"; 
+        if($token && $session && session('init')){
+            Wppconnect::make($url);
+            $response = Wppconnect::to($to)->withHeaders([
+                'Authorization' => 'Bearer '.$token
+            ])->asFormParams()->get();//->get(); //asJson(); //asString() //asFormParams()
+            $response = $response->getBody()->getContents();//json_decode($response->getBody(),true);
+        }
+
+        //dd($response);
+        return response()->json(array(
+            'base64'=> $response,
+            'status' => ($response != "")?"success":"fail"
+        ), 200);
+    }
 
 
     /**

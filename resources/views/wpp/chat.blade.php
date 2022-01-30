@@ -225,7 +225,7 @@
         getMessages(userSrializeId, isGroup);
         intervalId = setInterval(function(user_id, is_group){
             //console.log(user_id, is_group)
-            getMessages(user_id, is_group);
+            //getMessages(user_id, is_group);
         },1000, userSrializeId, isGroup);
 
     }
@@ -246,7 +246,7 @@
             },
             success:function(data) {
                 //$("#msg").html(data.msg);
-                //console.log(data);
+                console.log(data);
                 if(data.status == "success"){
                     var new_hash = data.chats_md5; 
                     if(currnt_chat_id != userId || currnet_chat_hash != new_hash){
