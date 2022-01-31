@@ -211,10 +211,66 @@
 
 
         $("#page_down_btn").on("click", function(){
-            scrollDown(last_elem_id);
-        })
+            scrollToElem(last_elem_id);
+        });
+
+
+        // $(".image-preview-area-btn").on("click", function(){
+        //     var serialize_id = $(this).attr("data-serializedid");
+        //     console.log("serialize_id:" , serialize_id);
+        // });
 
     });
+
+    function onImageClick(obj, serialize_id, mimetype){
+        let sessionImg =  getMsgImageBlob(serialize_id);
+        console.log("serialize_id:" , serialize_id);
+        if(sessionImg != ""){
+            $(obj).find("image-preview-loaded-img img").attr("src", sessionImg);
+            return true;
+        }
+        getImgAjax(obj, serialize_id, mimetype);
+        //console.log("sessionImg:", sessionImg);
+
+    }
+
+    function getImgAjax(obj, serialize_id, mimetype){
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type:'GET',
+            url:'/wpp/msg/' + serialize_id,
+            // data: {
+            //     user_id : userId,
+            //     is_group: isGroup
+            // },
+            success:function(data) {
+                //$("#msg").html(data.msg);
+                //console.log(data);
+                if(data.status == "success"){
+                    let imageDataURL = "data:"+mimetype+";base64,"+data.base64.replace(/"/g,"");
+                    //$("#prev_img_" + serialize_id.split("@")[1].split("_")[1]).attr("src", imageDataURL);
+                    // console.log( blob);
+                    fetch(imageDataURL)
+                    .then(function(res){
+                        return res.blob(); 
+                    })
+                    .then(function(imgBlob){
+                        var objectURL = URL.createObjectURL(imgBlob);
+                        $("#prev_img_" + serialize_id.split("@")[1].split("_")[1]).attr("src", objectURL);
+                        sessionStorage.setItem(serialize_id, objectURL)
+                        //console.log( objectURL );
+                    })
+                }
+                
+            }
+        });
+    }
 
     function setTimer(userSrializeId, isGroup){
         if(currnt_chat_id != userSrializeId){
@@ -293,9 +349,9 @@
         var msg_body_html = "";
         while (i < len) {
             var msg = writMsgArr[i];
-            if(msg.type == "chat"){
+            if(msg.type == "chat" || msg.type == "image"){
                 //show only chat
-                var msg_html = createMsgHtml(msg);
+                var msg_html = createMsgHtml(msg, isGroup);
                 //console.log(msg_html);
                 last_elem_id = msg_html[1];
                 if(isAppend){
@@ -310,9 +366,9 @@
             $(".chat-container-region").html(msg_body_html)
         }
         setMsgsTail();
-        scrollDown(last_elem_id);
+        scrollToElem(last_elem_id);
     }
-    function createMsgHtml(msg){
+    function createMsgHtml(msg, isGroup){
         var in_or_out = 'message-in';
         var tail_data = "tail-out";
         var html = "";
@@ -338,14 +394,14 @@
                             '</div>' + 
                             '<div class="msg-text-container copyable-text" data-pre-plain-text="">';
             
-            if(msg.quotedMsg && msg.quotedMsg.type == "chat"){
+            if(msg.quotedMsg && (msg.quotedMsg.type == "chat" || msg.quotedMsg.type == "image")){
                 //msg.quotedParticipant
                 //msg.quotedStanzaID
                 //msg.quotedMsg.type
                 //msg.quotedMsg.body
                 html += '<div class="relay-container">' +
                         '<div class="relay-container-width">' + 
-                            '<div class="relay-container-btn-role" role="button">' + 
+                            '<div class="relay-container-btn-role" role="button" onclick="scrollToElem(\''+ msg.quotedStanzaID +'\')">' + 
                                 '<span class="relay-bg-color-1 relay-bg-flex"></span>' + 
                                 '<div class="relay-msg-wrapper">' + 
                                     '<div class="relay-chat-msg-content">' + 
@@ -356,19 +412,43 @@
                                         '</div>' + 
                                         '<div class="relay-msg-text-content" dir="rtl" role="button">' + 
                                             '<span dir="auto" class="quoted-mention text-visibility">' + 
-                                                msg.quotedMsg.body + 
+                                                ((msg.quotedMsg.type == "image")?msg.quotedMsg.caption:msg.quotedMsg.body) + 
                                             '</span>' + 
                                         '</div>' +
                                     '</div>' + 
-                                '</div>' +
-                            '</div>' +
+                                '</div>';
+                        if(msg.quotedMsg.type == "image"){
+                            html += '<div class="replay-img-wrapper">' +
+                                        '<div class="replay-img-content">' +
+                                            '<div class="replay-img-row">' +
+                                                '<div class="replay-img-container">' +
+                                                    '<div class="img-content"' +
+                                                        'style="background-image: url(&quot;data:' + msg.quotedMsg.mimetype + ';base64,' + msg.quotedMsg.body + '&quot;);">' + 
+                                                    '</div>' +
+                                                '</div>' +
+                                            '</div>'+
+                                        '</div>'+
+                                    '</div>';
+                        }
+                    html += '</div>' +
                         '</div>' +
                     '</div>';
             }
- 
+            if(msg.type == "image"){
+                html += '<div role="button" class="image-preview-area-btn"' + 
+                        'onclick="onImageClick(this, \'' + msg.id._serialized + '\' , \'' + msg.mimetype+ '\')" ' + 
+                        'style="width: 330px; height: 330px;">' +
+                        '<div class="image-preview-area-container">' + 
+                            '<div class="image-preview-wrapper">' + 
+                                '<img src="data:' + msg.mimetype + ';base64,' + msg.body + '" class="image-preview-noloaded-img" >' + 
+                            '</div>'+
+                            '<div class="image-preview-wrapper image-preview-loaded-img">' + 
+                                '<img id="prev_img_' + msg.id.id +'" src="' + getMsgImageBlob(msg.id._serialized) + '" >' + 
+                        '</div></div></div>';
+            }
             html += '<div class="msg-text-content">\n' + 
                         '<span dir="rtl" class="text-visibility selectable-text copyable-text">\n' + 
-                            '<span>' + msg.body + '</span>\n' + 
+                            '<span>' + ((msg.type == "image")?msg.caption:msg.body) + '</span>\n' + 
                         '</span>\n' + 
                         '<span class="msg-text-foot-spacer"></span>\n' + 
                     '</div>\n' +
@@ -394,6 +474,27 @@
         //msg.id._serialized
         return [html,elem_id];
     }
+
+    function getMsgImageBlob(msg_serialized_id){
+        let imagBlob = sessionStorage.getItem(msg_serialized_id);
+        //console.log("imagBlob: " , imagBlob)
+        if(imagBlob !== null){
+
+            $.get(imagBlob).done(function () {
+                //alert("success");
+                //console.log('isImgExists: ', true);
+                return imagBlob;
+            }).fail(function () {
+                //alert("failed.");
+                //console.log('isImgExists: ', false);
+                sessionStorage.removeItem(msg_serialized_id);
+                return "";
+            });
+            //console.log('isImgExists: ', isImgExists);
+        }
+        return "";
+    }
+
     function setMsgsTail(){
         var svg_tail_out_ltr = '<svg viewBox="0 0 8 13" width="8" height="13"><path opacity=".13" d="M5.188 1H0v11.193l6.467-8.625C7.526 2.156 6.958 1 5.188 1z"></path><path fill="currentColor" d="M5.188 0H0v11.193l6.467-8.625C7.526 1.156 6.958 0 5.188 0z"></path></svg>';
         var svg_tail_out_rtl = '<svg viewBox="0 0 8 13" width="8" height="13"><path opacity=".13" fill="#0000000" d="M1.533 3.568L8 12.193V1H2.812C1.042 1 .474 2.156 1.533 3.568z" ></path><path fill="currentColor" d="M1.533 2.568L8 11.193V0H2.812C1.042 0 .474 1.156 1.533 2.568z"></path></svg>';
@@ -410,9 +511,9 @@
         }
     }
 
-    function scrollDown(last_elem_id){
-        if(last_elem_id != ""){
-            var element = document.getElementById(last_elem_id);
+    function scrollToElem(elem_id){
+        if(elem_id != ""){
+            var element = document.getElementById(elem_id);
             element.scrollIntoView({behavior: "smooth"}); //, block: "end", inline: "nearest"
         }
 
