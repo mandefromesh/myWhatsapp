@@ -15,9 +15,18 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ url('css/main.css') }}" rel="stylesheet">
+    <link href="{{ url('jQuery-contextMenu/jquery.contextMenu.min.css') }}" rel="stylesheet">
+    <link href="{{ url('popup-menu/popup.css') }}" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <script src="{{ url('jQuery-contextMenu/jquery.contextMenu.js') }}"></script>
+    <script src="{{ url('jQuery-contextMenu/jquery.ui.position.min.js') }}"></script>
+    <script src="{{ url('popup-menu/popup.js') }}"></script>
 
     @yield('head_style')
     @yield('head_script')
@@ -281,7 +290,7 @@
                                                 </div>
                                                 <div class="file-attach-btn">
                                                     <div class="menu-btn-container">
-                                                        <div aria-disabled="false" role="button" tabindex="0"
+                                                        <div id="attachment-btn" aria-disabled="false" role="button" tabindex="0"
                                                             class="btns-content" data-tab="9" title="Attach"
                                                             aria-label="Attach">
                                                             <span data-testid="clip" data-icon="clip" class="">

@@ -102,8 +102,6 @@
 
 
 @section('foot_script')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
 <script type="text/javascript">
     var currnt_chat_id = "";
     var is_current_group = "no";
@@ -213,6 +211,79 @@
 
         $("#page_down_btn").on("click", function(){
             scrollToElem(last_elem_id);
+        });
+
+        //
+
+
+
+        $.contextMenu({
+            selector: '.chat-item', 
+            callback: function(key, options) {
+                let chatItem = $(options.$trigger[0])
+                var m = "clicked: " + key;
+                //data-serializedid
+                //data-id
+                console.log(m, chatItem.data("id"), chatItem.data("serializedid")); 
+            },
+            items: {
+            //     "edit": {name: "Edit", icon: "edit"},
+            //     "cut": {name: "Cut", icon: "cut"},
+            //    copy: {name: "Copy", icon: "copy"},
+            //     "paste": {name: "Paste", icon: "paste"},
+            //     "delete": {name: "Delete", icon: "delete"},
+            //     "sep1": "---------",
+            //     "quit": {name: "Quit", icon: function(){
+            //         return 'context-menu-icon context-menu-icon-quit';
+            //     }}
+                "replay": {name: "Replay", icon: "fa-reply-all"},
+                "forword": {name: "Forword", icon: "fa-share-all"},
+                "sep1": "---------",
+                "delete": {name: "Delete", icon: "delete"}
+            }
+        });
+
+        // $('.context-menu-one').on('click', function(e){
+        //     console.log('clicked', this, e);
+        // })   
+
+
+
+        
+        //attachment-btn
+        var attachment_Menu =  '<div>\
+            <a href="#"><i id="cof" class="fa fa-cog"></i></a>\
+            <a href="#"><i id="file" class="far fa-file"></i></a>\
+            </div>';
+
+        $("#attachment-btn").popup({
+            content: attachment_Menu,
+              // Where the popup will show by default- top. 
+                // Other options: right, bottom, or left
+            position: "top",  
+                // Menu Element theme. Defaults to popupTheme, but custom class can be set instead
+            theme: "popupTheme",
+
+            // Default no style, will revert to default colours. 
+            // Other options: blue, red, green, custom
+            style: "blue",  
+
+            // Standard animation by default. 
+            // Other options: flip, grow, bounce , standard
+            animation: "grow",  
+
+            // Default set to "click".
+            // Can also be set to hover
+            event: "click", 
+
+            // When true, clicking off the menu closes it. When false, only clicking on the menu closes it.
+            hideOnClick: true,  
+
+            // z-index can be set for each menu for layering if necessary
+            zIndex: 1000,  
+            popItemClick: function(e){
+                console.log("menu", e)
+            }
         });
 
 
@@ -391,7 +462,7 @@
             tail_data = 'tail-in';
         }
         html = '<div tabindex="-1" class="chat-item focusable-list-item ' + in_or_out +  '"' + 
-            'data-id="' + msg.id.id + '" id="' + msg.id.id + '" >' + 
+            'data-id="' + msg.id.id + '" id="' + msg.id.id + '" data-serializedid="'+msg.id._serialized+'">' + 
             '<span></span>' + //?
             '<div class="chat-item-content chat-item-wide chat-item-shape">'; 
             if(!msg.quotedMsg){
