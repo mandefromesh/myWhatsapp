@@ -18,17 +18,18 @@
     <!-- <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" rel="stylesheet"> -->
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/font-awesome.min.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
     <!-- Styles -->
     <link href="{{ url('css/main.css') }}" rel="stylesheet">
     <link href="{{ url('jQuery-contextMenu/jquery.contextMenu.min.css') }}" rel="stylesheet">
     <link href="{{ url('popup-menu/popup.css') }}" rel="stylesheet">
+    <link href="{{ url('emojionearea/emojionearea.min.css') }}" rel="stylesheet">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
+  
     <script src="{{ url('jQuery-contextMenu/jquery.contextMenu.js') }}"></script>
     <script src="{{ url('jQuery-contextMenu/jquery.ui.position.min.js') }}"></script>
     <script src="{{ url('popup-menu/popup.js') }}"></script>
+    <script src="{{ url('emojionearea/emojionearea.min.js') }}"></script>
 
     @yield('head_style')
     @yield('head_script')

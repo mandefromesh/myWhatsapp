@@ -252,12 +252,9 @@
         
         //attachment-btn
         var attachment_Menu =  '<div>\
-            <a href="#"><i class="fa fa-cog"></i></a>\
-            <a href="#"><i id="file" class="far fa-file"></i></a>\
-            <a href="#"><i id="plane" class="fa fa-plane"></i></a>\
-            <a href="#"><i id="car" class="fa fa-car"></i></a>\
-            <a href="#"><i id="bus" class="fa fa-bus"></i></a>\
-            <a href="#"><i id="bicycle" class="fa fa-bicycle"></i></a>\
+            <a href="#" id="file"><i id="file" class="far fa-file"></i></a>\
+            <a href="#" id="user-card"><i class="far fa-id-card"></i></a>\
+            <a href="#" id="media"><i class="fas fa-photo-video"></i></a>\
             </div>';
 
         $("#attachment-btn").popup({
@@ -286,7 +283,7 @@
             // z-index can be set for each menu for layering if necessary
             zIndex: 1000,  
             popItemClick: function(e){
-                console.log("menu", this)
+                console.log("menu", $(this).attr("id"))
             }
         });
 
@@ -371,6 +368,7 @@
             //getMessages(user_id, is_group);
         },1000, userSrializeId, isGroup);
 
+        //$(".msg-text-content").emojioneArea()
     }
 
     function getMessages(userId, isGroup) {
@@ -454,6 +452,10 @@
         }
         setMsgsTail();
         scrollToElem(last_elem_id);
+        //$(".msg-text-content").
+        // $(".msg-text-content span").each(function(){
+        //     $(this).emojioneArea()
+        // });
     }
     function createMsgHtml(msg, isGroup){
         var in_or_out = 'message-in';
