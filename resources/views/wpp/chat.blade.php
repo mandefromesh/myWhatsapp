@@ -126,7 +126,7 @@
             var userName = $(this).find(".user-name-txt").text();
             var userImg = $(this).find(".user-real-img").attr("src");
             is_current_group = isGroup;
-            console.log(userSrializeId, isGroup)
+            console.log("users-group-cell-frame: ", userSrializeId, isGroup)
             //avater-img-container
             if(userImg == "" || userImg === undefined || userImg == null){
                 if($(".main-head-img-wrapper .avater-img-container img").length > 0){
@@ -372,6 +372,7 @@
     }
 
     function getMessages(userId, isGroup) {
+        console.log(userId)
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -434,7 +435,7 @@
         var msg_body_html = "";
         while (i < len) {
             var msg = writMsgArr[i];
-            if(msg.type == "chat" || msg.type == "image"){
+            if(msg.type == "chat" || msg.type == "image" || msg.type == "video"){
                 //show only chat
                 var msg_html = createMsgHtml(msg, isGroup);
                 //console.log(msg_html);
@@ -453,9 +454,13 @@
         setMsgsTail();
         scrollToElem(last_elem_id);
         //$(".msg-text-content").
-        // $(".msg-text-content span").each(function(){
-        //     $(this).emojioneArea()
-        // });
+        // twemoji.folder = 'svg';
+        // twemoji.ext = '.svg';
+        // twemoji.size = '36x36';
+        $(".msg-text-content").each(function(){
+            $(this).html(twemoji.parse($(this).html()))
+        });
+        $(".emoji").width("7%")
     }
     function createMsgHtml(msg, isGroup){
         var in_or_out = 'message-in';
@@ -523,7 +528,7 @@
                         '</div>' +
                     '</div>';
             }
-            if(msg.type == "image"){
+            if(msg.type == "image" ||  msg.type == "video"){
                 html += '<div role="button" class="image-preview-area-btn"' + 
                         'onclick="onImageClick(this, \'' + msg.id._serialized + '\' , \'' + msg.mimetype+ '\')" ' + 
                         'style="width: 330px; height: 330px;">' +
@@ -531,13 +536,20 @@
                             '<div class="image-preview-wrapper">' + 
                                 '<img src="data:' + msg.mimetype + ';base64,' + msg.body + '" class="image-preview-noloaded-img" >' + 
                             '</div>'+
-                            '<div class="image-preview-wrapper image-preview-loaded-img">' + 
-                                '<img id="prev_img_' + msg.id.id +'" src="' + getMsgImageBlob(msg.id._serialized) + '" >' + 
-                        '</div></div></div>';
+                            '<div class="image-preview-wrapper image-preview-loaded-img">';
+                            if(msg.type == "image"){
+                                html += '<img id="prev_img_' + msg.id.id +'" src="' + getMsgImageBlob(msg.id._serialized) + '" >';
+                            }
+                            if(msg.type == "video"){
+                                html += '<video id="prev_img_' + msg.id.id +'" controls>' + 
+                                            '<source  src="' + getMsgImageBlob(msg.id._serialized) + '" >' + 
+                                        '</video>';
+                            }
+                        html += '</div></div></div>';
             }
             html += '<div class="msg-text-content">\n' + 
                         '<span dir="rtl" class="text-visibility selectable-text copyable-text">\n' + 
-                            '<span>' + ((msg.type == "image")?msg.caption:msg.body) + '</span>\n' + 
+                            '<span>' + ((msg.type == "image" ||  msg.type == "video")?msg.caption:msg.body) + '</span>\n' + 
                         '</span>\n' + 
                         '<span class="msg-text-foot-spacer"></span>\n' + 
                     '</div>\n' +
@@ -598,9 +610,10 @@
     }
 
     function scrollToElem(elem_id){
-        if(elem_id != ""){
+        if(elem_id != "" && elem_id !== null && elem_id !== undefined){
             var element = document.getElementById(elem_id);
-            element.scrollIntoView({behavior: "smooth"}); //, block: "end", inline: "nearest"
+            if(element  !== null )
+                element.scrollIntoView({behavior: "smooth"}); //, block: "end", inline: "nearest"
         }
 
     }

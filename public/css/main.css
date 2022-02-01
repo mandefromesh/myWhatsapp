@@ -2045,7 +2045,8 @@ html[dir] .voice-msg-btn-wrapper {
     height: 100%;
 }
 
-.image-preview-wrapper img {
+.image-preview-wrapper img,
+.image-preview-wrapper video {
     width: 100%;
     flex-shrink: 0;
     flex-basis: auto;
