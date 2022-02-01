@@ -103,6 +103,7 @@
 
 @section('foot_script')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
 <script type="text/javascript">
     var currnt_chat_id = "";
     var is_current_group = "no";
@@ -224,9 +225,17 @@
 
     function onImageClick(obj, serialize_id, mimetype){
         let sessionImg =  getMsgImageBlob(serialize_id);
-        console.log("serialize_id:" , serialize_id);
-        if(sessionImg != ""){
-            $(obj).find("image-preview-loaded-img img").attr("src", sessionImg);
+        let img_elem_id =  serialize_id.split("@")[1].split("_")[1];
+        let prev_img = $("#prev_img_" + img_elem_id).attr("src");
+        //console.log("serialize_id:" , serialize_id);
+        if(sessionImg != "" && prev_img == ""){
+            //$(obj).find("image-preview-loaded-img img").attr("src", sessionImg);
+            $("#prev_img_" + img_elem_id).attr("src",sessionImg);
+            return true;
+        }
+        if(prev_img != ""){
+            //larg the image - TODO
+            console.log("large the image - TODO");
             return true;
         }
         getImgAjax(obj, serialize_id, mimetype);
@@ -256,16 +265,19 @@
                     let imageDataURL = "data:"+mimetype+";base64,"+data.base64.replace(/"/g,"");
                     //$("#prev_img_" + serialize_id.split("@")[1].split("_")[1]).attr("src", imageDataURL);
                     // console.log( blob);
-                    fetch(imageDataURL)
-                    .then(function(res){
-                        return res.blob(); 
-                    })
-                    .then(function(imgBlob){
-                        var objectURL = URL.createObjectURL(imgBlob);
-                        $("#prev_img_" + serialize_id.split("@")[1].split("_")[1]).attr("src", objectURL);
-                        sessionStorage.setItem(serialize_id, objectURL)
-                        //console.log( objectURL );
-                    })
+
+                    $("#prev_img_" + serialize_id.split("@")[1].split("_")[1]).attr("src", imageDataURL);
+                        sessionStorage.setItem(serialize_id, imageDataURL)
+
+                    // fetch(imageDataURL)
+                    // .then(function(res){
+                    //     return res.blob(); 
+                    // })
+                    // .then(function(imgBlob){
+                    //     var objectURL = URL.createObjectURL(imgBlob);
+                    //     $("#prev_img_" + serialize_id.split("@")[1].split("_")[1]).attr("src", objectURL);
+                    //     sessionStorage.setItem(serialize_id, objectURL)
+                    // })
                 }
                 
             }
@@ -476,21 +488,18 @@
     }
 
     function getMsgImageBlob(msg_serialized_id){
-        let imagBlob = sessionStorage.getItem(msg_serialized_id);
-        //console.log("imagBlob: " , imagBlob)
-        if(imagBlob !== null){
-
-            $.get(imagBlob).done(function () {
-                //alert("success");
-                //console.log('isImgExists: ', true);
-                return imagBlob;
-            }).fail(function () {
-                //alert("failed.");
-                //console.log('isImgExists: ', false);
-                sessionStorage.removeItem(msg_serialized_id);
-                return "";
-            });
-            //console.log('isImgExists: ', isImgExists);
+        let imagBase64 = sessionStorage.getItem(msg_serialized_id);
+        //console.log("imagBase64: " , imagBase64)
+        if(imagBase64 !== null){
+            return imagBase64;
+            // $.get(imagBase64).done(function () {
+            //     //console.log('isImgExists: ', true);
+            //     return imagBase64;
+            // }).fail(function () {
+            //     //console.log('isImgExists: ', false);
+            //     sessionStorage.removeItem(msg_serialized_id);
+            //     return "";
+            // });
         }
         return "";
     }
