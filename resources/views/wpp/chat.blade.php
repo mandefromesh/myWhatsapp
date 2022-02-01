@@ -237,7 +237,7 @@
             //         return 'context-menu-icon context-menu-icon-quit';
             //     }}
                 "replay": {name: "Replay", icon: "fa-reply-all"},
-                "forword": {name: "Forword", icon: "fa-share-all"},
+                "forword": {name: "Forword", icon: "fa-share"},
                 "sep1": "---------",
                 "delete": {name: "Delete", icon: "delete"}
             }
@@ -252,8 +252,12 @@
         
         //attachment-btn
         var attachment_Menu =  '<div>\
-            <a href="#"><i id="cof" class="fa fa-cog"></i></a>\
+            <a href="#"><i class="fa fa-cog"></i></a>\
             <a href="#"><i id="file" class="far fa-file"></i></a>\
+            <a href="#"><i id="plane" class="fa fa-plane"></i></a>\
+            <a href="#"><i id="car" class="fa fa-car"></i></a>\
+            <a href="#"><i id="bus" class="fa fa-bus"></i></a>\
+            <a href="#"><i id="bicycle" class="fa fa-bicycle"></i></a>\
             </div>';
 
         $("#attachment-btn").popup({
@@ -262,11 +266,11 @@
                 // Other options: right, bottom, or left
             position: "top",  
                 // Menu Element theme. Defaults to popupTheme, but custom class can be set instead
-            theme: "popupTheme",
+            theme: "",
 
             // Default no style, will revert to default colours. 
             // Other options: blue, red, green, custom
-            style: "blue",  
+            style: "",  
 
             // Standard animation by default. 
             // Other options: flip, grow, bounce , standard
@@ -282,7 +286,7 @@
             // z-index can be set for each menu for layering if necessary
             zIndex: 1000,  
             popItemClick: function(e){
-                console.log("menu", e)
+                console.log("menu", this)
             }
         });
 
