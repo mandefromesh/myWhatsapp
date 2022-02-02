@@ -102,6 +102,7 @@
 
 
 @section('foot_script')
+
 <script type="text/javascript">
     var currnt_chat_id = "";
     var is_current_group = "no";
@@ -109,6 +110,20 @@
     var msg_ary = [];
     var intervalId;
     var last_elem_id = "";
+
+
+    new EmojiPicker({
+            trigger: [
+                {
+                    selector: '.emojis-btn',
+                    insertInto: ['.main-textbox-input'] // '.selector' can be used without array
+                }
+            ],
+            closeButton: true,
+            //specialButtons: green
+        });
+
+
     $(document).ready(function () {
 
         var sent_msg_clock_stt = '<span data-testid="msg-time" aria-label=" Pending " data-icon="msg-time" class=""><svg viewBox="0 0 16 15" width="16" height="15" class=""><path fill="currentColor" d="M9.75 7.713H8.244V5.359a.5.5 0 0 0-.5-.5H7.65a.5.5 0 0 0-.5.5v2.947a.5.5 0 0 0 .5.5h.094l.003-.001.003.002h2a.5.5 0 0 0 .5-.5v-.094a.5.5 0 0 0-.5-.5zm0-5.263h-3.5c-1.82 0-3.3 1.48-3.3 3.3v3.5c0 1.82 1.48 3.3 3.3 3.3h3.5c1.82 0 3.3-1.48 3.3-3.3v-3.5c0-1.82-1.48-3.3-3.3-3.3zm2 6.8a2 2 0 0 1-2 2h-3.5a2 2 0 0 1-2-2v-3.5a2 2 0 0 1 2-2h3.5a2 2 0 0 1 2 2v3.5z"></path></svg></span>';
@@ -293,7 +308,15 @@
         //     console.log("serialize_id:" , serialize_id);
         // });
 
+        // $("#smiley-btn-id").on("click", function(){
+        //     console.log("smiley-btn-id")
+        // });
+
+
+        // $(".msg-text-write-area .textbox-input");
+
     });
+
 
     function onImageClick(obj, serialize_id, mimetype){
         let sessionImg =  getMsgImageBlob(serialize_id);
@@ -460,7 +483,7 @@
         $(".msg-text-content").each(function(){
             $(this).html(twemoji.parse($(this).html()))
         });
-        $(".emoji").width("7%")
+        $(".chat-container-region .emoji").width("7%")
     }
     function createMsgHtml(msg, isGroup){
         var in_or_out = 'message-in';
@@ -488,7 +511,7 @@
                             '</div>' + 
                             '<div class="msg-text-container copyable-text" data-pre-plain-text="">';
             
-            if(msg.quotedMsg && (msg.quotedMsg.type == "chat" || msg.quotedMsg.type == "image")){
+            if(msg.quotedMsg && (msg.quotedMsg.type == "chat" || msg.quotedMsg.type == "image"|| msg.quotedMsg.type == "video")){
                 //msg.quotedParticipant
                 //msg.quotedStanzaID
                 //msg.quotedMsg.type
@@ -506,12 +529,12 @@
                                         '</div>' + 
                                         '<div class="relay-msg-text-content" dir="rtl" role="button">' + 
                                             '<span dir="auto" class="quoted-mention text-visibility">' + 
-                                                ((msg.quotedMsg.type == "image")?msg.quotedMsg.caption:msg.quotedMsg.body) + 
+                                                ((msg.quotedMsg.type == "image" || msg.quotedMsg.type == "video")?msg.quotedMsg.caption:msg.quotedMsg.body) + 
                                             '</span>' + 
                                         '</div>' +
                                     '</div>' + 
                                 '</div>';
-                        if(msg.quotedMsg.type == "image"){
+                        if(msg.quotedMsg.type == "image" || msg.quotedMsg.type == "video"){
                             html += '<div class="replay-img-wrapper">' +
                                         '<div class="replay-img-content">' +
                                             '<div class="replay-img-row">' +
@@ -648,5 +671,6 @@
         });
     }
 
+    //twemoji.parse(document.body);
 </script>
 @endsection

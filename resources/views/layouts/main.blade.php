@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="ltr">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSRF Token -->
@@ -13,8 +13,8 @@
     <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
 
     <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <!-- <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> -->
     <!-- <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" rel="stylesheet"> -->
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/font-awesome.min.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -25,6 +25,7 @@
     <!-- <link href="{{ url('emojionearea/emojionearea.min.css') }}" rel="stylesheet"> -->
     <!-- <link href="https://rawgit.com/ellekasai/twemoji-awesome/gh-pages/twemoji-awesome.css" rel="stylesheet"> -->
 
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
   
     <script src="{{ url('jQuery-contextMenu/jquery.contextMenu.js') }}"></script>
@@ -33,6 +34,8 @@
     <!-- <script src="{{ url('emojionearea/emojionearea.min.js') }}"></script> -->
     <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
     <!-- <script src="//twemoji.maxcdn.com/twemoji.min.js"></script> -->
+    <script src="{{ url('emoji_picker/vanillaEmojiPicker.js') }}"></script>
+    
     @yield('head_style')
     @yield('head_script')
 </head>
@@ -279,7 +282,7 @@
                                         <div class="main-text-typing-container">
                                             <div class="main-text-typing-smily-area main-text-typing-smily-area-view">
                                                 <div data-state="closed" role="button" class="smiley-btn btn-width">
-                                                    <button tabindex="-1" class="btn-width"
+                                                    <button tabindex="-1" class="btn-width emojis-btn" id="smiley-btn-id"
                                                         aria-label="Open emojis panel" data-tab="9"
                                                         style="transform: translateX(0px);">
                                                         <div>
@@ -317,7 +320,7 @@
                                                         <div class="textbox-placeholder" style="visibility: visible">
                                                             Type a message </div>
                                                         <div id="main_msg_textbox" title="Type a message" role="textbox"
-                                                            class="textbox-input copyable-text selectable-text"
+                                                            class="textbox-input main-textbox-input copyable-text selectable-text"
                                                             contenteditable="true" data-tab="9" dir="ltr"
                                                             spellcheck="true"></div>
                                                     </div>
