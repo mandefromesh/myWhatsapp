@@ -317,12 +317,12 @@
                                             <div class="msg-text-write-area-wrapper">
                                                 <div tabindex="-1" class="msg-text-write-area">
                                                     <div tabindex="-1" class="textbox-container textbox">
-                                                        <div class="textbox-placeholder" style="visibility: visible">
+                                                        <div class="textbox-placeholder" id="textbox_placeholde" style="visibility: visible">
                                                             Type a message </div>
-                                                        <div id="main_msg_textbox" title="Type a message" role="textbox"
+                                                        <textarea id="main_msg_textbox" title="Type a message" role="textbox"
                                                             class="textbox-input main-textbox-input copyable-text selectable-text"
                                                             contenteditable="true" data-tab="9" dir="ltr"
-                                                            spellcheck="true"></div>
+                                                            spellcheck="true"></textarea>
                                                     </div>
                                                 </div>
                                             </div>

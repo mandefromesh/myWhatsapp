@@ -111,7 +111,8 @@
     var intervalId;
     var last_elem_id = "";
 
-
+    // twemoji.size = "svg";
+    // twemoji.ext = ".svg";
     new EmojiPicker({
             trigger: [
                 {
@@ -170,11 +171,16 @@
 
 
 
-        $(".msg-text-write-area .textbox-input").on("input", function(e){
-            if($(this).text() != ""){
-                $(".msg-text-write-area .textbox-placeholder").hide();
+        //$(".msg-text-write-area .textbox-input").on("input", function(e){
+        $("#main_msg_textbox").on("input", function(e){
+            //console.log($(this).val())
+            if($(this).val() != ""){
+                //$(".msg-text-write-area .textbox-placeholder").hide();
+                $("#textbox_placeholde").hide();
+                //$(this).val(twemoji.parse($(this).val())) ;
+
             }else{
-                $(".msg-text-write-area .textbox-placeholder").show();
+                $("#textbox_placeholde").show();
             }
 
         })
@@ -643,7 +649,8 @@
 
     function sendTextMsg(){
         //main_msg_textbox
-        let txtMsg = $("#main_msg_textbox").text();
+        //let txtMsg = $("#main_msg_textbox").text();
+        let txtMsg = $("#main_msg_textbox").val();
         //var sendTo = currnt_chat_id;
         console.log("send to:", currnt_chat_id, is_current_group);
 

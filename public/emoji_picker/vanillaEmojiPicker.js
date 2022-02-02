@@ -7735,9 +7735,10 @@
                         emojiesHTML += `<div class="fg-emoji-picker-category-wrapper" id="${key}">`;
                             emojiesHTML += `<p class="fg-emoji-picker-category-title">${key}</p>`;
                             categoryObj.forEach(ej => {
-                                let ej_emoji = twemoji.parse(ej.emoji)
+                                let ej_emoji = ej.emoji;//twemoji.parse(ej.emoji);
+                                //console.log("ej_emoji: ", ej_emoji)
                                 emojiesHTML += `<li data-title="${ej.title.toLowerCase()}">
-                                    <a title="${ej.title}" href="#">${ej_emoji}</a>
+                                    <a title="${ej.title}" data-emj="${ej.emoji}" href="#">${ej_emoji}</a>
                                 </li>`;
                             });
                         emojiesHTML += '</div>';
@@ -7790,9 +7791,9 @@
 
             functions.rePositioning(document.querySelector('.fg-emoji-container'));
 
-            setTimeout(() => {
-                document.querySelector('.fg-emoji-picker-search input').focus();
-            }, 500)
+            // setTimeout(() => {
+            //     document.querySelector('.fg-emoji-picker-search input').focus();
+            // }, 500)
         },
 
 
@@ -7838,10 +7839,11 @@
 
             e.preventDefault();
             
-            const emoji = e.target.innerText.trim();
+            const emoji =  e.target.innerText.trim();
             const myField = document.querySelectorAll(this.insertInto);
             const myValue = emoji;
-
+            //data-emj
+            console.log("selected emoji",  emoji)
             // Check if selector is an array
             myField.forEach(myField => {
 
@@ -7930,7 +7932,7 @@
         this.lib(document.body).on('click', functions.closePicker, '#fg-emoji-picker-close-button');
         this.lib(document.body).on('click', functions.checkPickerExist);
         this.lib(document.body).on('click', functions.render, this.trigger);
-        this.lib(document.body).on('click', functions.insert, '.fg-emoji-list a');
+        this.lib(document.body).on('click', functions.insert, '.fg-emoji-list a'); //a->li
         this.lib(document.body).on('click', functions.categoryNav, '.fg-emoji-nav a');
         this.lib(document.body).on('input', functions.search, '.fg-emoji-picker-search input');
         this.lib(document).on('mousedown', functions.mouseDown, '#fg-emoji-picker-move');

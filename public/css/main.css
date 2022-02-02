@@ -7,6 +7,7 @@ html[dir=rtl] {
 }
 
 body {
+    /* font-family: Segoe UI, Helvetica Neue, Helvetica, Lucida Grande, Arial, Ubuntu, Cantarell, Fira Sans, sans-serif; */
     font-family: Segoe UI, Helvetica Neue, Helvetica, Lucida Grande, Arial, Ubuntu, Cantarell, Fira Sans, sans-serif;
     color: #4a4a4a;
     -webkit-user-select: none;
