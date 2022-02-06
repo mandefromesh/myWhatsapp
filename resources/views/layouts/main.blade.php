@@ -25,6 +25,7 @@
     <!-- <link href="{{ url('emojionearea/emojionearea.min.css') }}" rel="stylesheet"> -->
     <!-- <link href="https://rawgit.com/ellekasai/twemoji-awesome/gh-pages/twemoji-awesome.css" rel="stylesheet"> -->
 
+    <!-- <link href="{{ url('wasap_emoji/wasap_emoji.css') }}" rel="stylesheet"> -->
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
   
@@ -34,8 +35,13 @@
     <!-- <script src="{{ url('emojionearea/emojionearea.min.js') }}"></script> -->
     <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
     <!-- <script src="//twemoji.maxcdn.com/twemoji.min.js"></script> -->
-    <script src="{{ url('emoji_picker/vanillaEmojiPicker.js') }}"></script>
+    <!-- <script src="{{ url('emoji_picker/vanillaEmojiPicker.js') }}"></script> -->
+    <!-- <script src="{{ url('wasap_emoji/wasap_emoji.js') }}"></script> -->
     
+    <link href="{{ url('emoji-mart-outside-react/emoji-mart/css/emoji-mart.css') }}" rel="stylesheet">
+    <script src="{{ url('emoji-mart-outside-react/dist/main.js') }}" type="text/javascript"></script>
+
+
     @yield('head_style')
     @yield('head_script')
 </head>
@@ -282,6 +288,20 @@
                                         <div class="main-text-typing-container">
                                             <div class="main-text-typing-smily-area main-text-typing-smily-area-view">
                                                 <div data-state="closed" role="button" class="smiley-btn btn-width">
+
+                                                    <button tabindex="-1" class="smiley-close-btn"
+                                                        aria-label="סגירת חלונית" data-tab="10">
+                                                        <div>
+                                                            <span data-testid="x" data-icon="x" class="">
+                                                                <svg viewBox="0 0 24 24" width="24" height="24" class="">
+                                                                    <path fill="currentColor"
+                                                                        d="m19.1 17.2-5.3-5.3 5.3-5.3-1.8-1.8-5.3 5.4-5.3-5.3-1.8 1.7 5.3 5.3-5.3 5.3L6.7 19l5.3-5.3 5.3 5.3 1.8-1.8z">
+                                                                    </path>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                    </button>
+
                                                     <button tabindex="-1" class="btn-width emojis-btn" id="smiley-btn-id"
                                                         aria-label="Open emojis panel" data-tab="9"
                                                         style="transform: translateX(0px);">
@@ -313,16 +333,18 @@
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <!-- msg text write area -->
                                             <div class="msg-text-write-area-wrapper">
                                                 <div tabindex="-1" class="msg-text-write-area">
                                                     <div tabindex="-1" class="textbox-container textbox">
                                                         <div class="textbox-placeholder" id="textbox_placeholde" style="visibility: visible">
                                                             Type a message </div>
-                                                        <textarea id="main_msg_textbox" title="Type a message" role="textbox"
+                                                        <div id="main_msg_textbox" title="Type a message" role="textbox"
                                                             class="textbox-input main-textbox-input copyable-text selectable-text"
                                                             contenteditable="true" data-tab="9" dir="ltr"
-                                                            spellcheck="true"></textarea>
+                                                            spellcheck="true">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -340,6 +362,13 @@
                                             </div>
                                         </div>
                                     </span>
+                                </div>
+                            </div>
+
+                            <!-- emoji area -->
+                            <div class="wasap-emoji-area">
+                                <div class="wasap_emoji">
+                                    <emoji-picker></emoji-picker>
                                 </div>
                             </div>
 

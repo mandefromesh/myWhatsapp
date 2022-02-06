@@ -113,17 +113,26 @@
 
     // twemoji.size = "svg";
     // twemoji.ext = ".svg";
-    new EmojiPicker({
-            trigger: [
-                {
-                    selector: '.emojis-btn',
-                    insertInto: ['.main-textbox-input'] // '.selector' can be used without array
-                }
-            ],
-            closeButton: true,
-            //specialButtons: green
-        });
+    // new EmojiPicker({
+    //         trigger: [
+    //             {
+    //                 selector: '.emojis-btn',
+    //                 insertInto: ['.main-textbox-input'] // '.selector' can be used without array
+    //             }
+    //         ],
+    //         closeButton: true,
+    //         //specialButtons: green
+    //     });
 
+    // new WasapEmojiPicker({
+    //     trigger: [
+    //         {
+    //             selector: ".smiley-btn",
+    //             insertInto: ".main-msg-textbox"
+    //         }
+    //     ],
+    //     position: ".wasap-emoji-area"
+    // });
 
     $(document).ready(function () {
 
@@ -174,7 +183,7 @@
         //$(".msg-text-write-area .textbox-input").on("input", function(e){
         $("#main_msg_textbox").on("input", function(e){
             //console.log($(this).val())
-            if($(this).val() != ""){
+            if($(this).html() != ""){
                 //$(".msg-text-write-area .textbox-placeholder").hide();
                 $("#textbox_placeholde").hide();
                 //$(this).val(twemoji.parse($(this).val())) ;
@@ -650,8 +659,17 @@
     function sendTextMsg(){
         //main_msg_textbox
         //let txtMsg = $("#main_msg_textbox").text();
-        let txtMsg = $("#main_msg_textbox").val();
+        let txtMsg = $("#main_msg_textbox").html();
         //var sendTo = currnt_chat_id;
+
+        console.log(txtMsg)
+        // let cleanText = txtMsg.replace(/<span class=\"/g,"{[!")
+        //                     .replace(/" style="background-position: /g,"|")
+        //                     .replace(/;" tabindex="-1" data-emoji-index="/g,"|")
+        //                     .replace(/\"><\/span>/g,"!]}")
+        //console.log(cleanText)
+        //return false;
+        //txtMsg = escapeHtml(txtMsg);
         console.log("send to:", currnt_chat_id, is_current_group);
 
 
@@ -677,7 +695,25 @@
             }
         });
     }
+    function escapeHtml(unsafe){
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
 
+    function un_escapeHtml(safe){
+        if(safe===null) return "";
+        return safe;
+        return safe
+            .replace(/&amp;/g, "&")
+            .replace(/&lt;/g, "<")
+            .replace(/&gt;/g, ">")
+            .replace(/&quot;/g, '"')
+            .replace(/&#039;/g, "'");
+    }
     //twemoji.parse(document.body);
 </script>
 @endsection

@@ -1,0 +1,838 @@
+/* div.wasap-emoji-area > div.wasap_emoji  */
+.wasap_emoji {
+    position: absolute;
+    bottom: 0;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+html[dir="rtl"] .wasap_emoji {
+    right: 0;
+}
+
+html[dir="ltr"] .wasap_emoji {
+    left: 0;
+}
+
+._3Bc7H {
+    position: relative;
+}
+
+html[dir] ._1DP8V {
+    transform: translateZ(0);
+    transform-origin: bottom;
+}
+
+._1DP8V {
+    height: 320px;
+    overflow: hidden;
+}
+
+html[dir="rtl"] ._16kef {
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+html[dir="ltr"] ._16kef {
+    border-left: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+html[dir] ._16kef {
+    background-color: #f0f0f0;
+}
+
+._16kef {
+    position: relative;
+    z-index: 300;
+    display: flex;
+    flex: none;
+    align-items: center;
+    height: 44px;
+    color: rgba(0, 0, 0, 0.35);
+}
+
+/* selected tab */
+html[dir="rtl"] .NCirl {
+    right: 0;
+}
+
+html[dir="ltr"] .NCirl {
+    left: 0;
+}
+
+html[dir] .NCirl {
+    background-color: #009688;
+}
+
+._2TG0r {
+    transition: transform .3s cubic-bezier(.1, .82, .25, 1), opacity .3s cubic-bezier(.1, .82, .25, 1), height .3s cubic-bezier(.1, .82, .25, 1);
+}
+
+.NCirl {
+    position: absolute;
+    bottom: 0;
+    width: 11.1111%;
+    height: 4px;
+    opacity: 1;
+    transition: height .3s ease;
+}
+
+/* last used emojis tab */
+html[dir] ._-2oTK {
+    padding: 0 4px;
+}
+
+._1v2yz {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+._-2oTK {
+    box-sizing: border-box;
+    flex: 1;
+    overflow: hidden;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 19px;
+    color: rgba(0, 0, 0, .32);
+    text-transform: uppercase;
+}
+
+._1zlQ1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+}
+
+html[dir="rtl"] ._2bgh7 {
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+html[dir="ltr"] ._2bgh7 {
+    border-left: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+html[dir] ._2bgh7 {
+    background-color: #f0f0f0;
+}
+
+._2bgh7 {
+    position: relative;
+}
+
+._1Kk5B {
+    z-index: 200;
+    display: block;
+}
+
+._3Cc11,
+._1Kk5B {
+    position: relative;
+}
+
+html[dir="rtl"] ._10mnt._3KMMv {
+    left: 15px;
+}
+
+html[dir="ltr"] ._10mnt._3KMMv {
+    right: 15px;
+}
+
+html[dir="rtl"] ._10mnt {
+    left: 6px;
+    right: 0;
+}
+
+html[dir="ltr"] ._10mnt {
+    right: 6px;
+    left: 0;
+}
+
+html[dir] ._10mnt {
+    padding: 6px 12px;
+    background-color: #f0f0f0;
+}
+
+._10mnt {
+    position: absolute;
+    top: 0;
+    z-index: 200;
+}
+
+html[dir] ._2VSMU {
+    background-color: #e6e6e6;
+    border-radius: 5px;
+}
+
+._2VSMU {
+    display: block;
+    flex-grow: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+html[dir] .M1or0 {
+    padding: 10px 12px;
+}
+
+.M1or0 {
+    display: flex;
+    align-items: center;
+    transition: height .18s ease-in-out;
+}
+
+/* search emoji text input area  */
+html[dir="rtl"] ._3K9QW {
+    text-align: right;
+}
+
+html[dir="ltr"] ._3K9QW {
+    text-align: left;
+}
+
+html[dir] ._3K9QW {
+    padding: 0;
+    background: inherit;
+    border: none;
+}
+
+._3K9QW {
+    z-index: 1;
+    width: 100%;
+    min-height: 20px;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+    color: var(--primary-text);
+    outline: none;
+}
+
+/* emoji content area */
+
+._3Cc11 {
+    z-index: 100;
+}
+
+html[dir] ._1rtUb {
+    padding-top: 10px;
+    /*62px; no search*/
+}
+
+._1rtUb {
+    position: relative;
+    box-sizing: border-box;
+    height: 276px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+html[dir] .WYyr1 {
+    margin-top: -1px;
+}
+
+._3uIPm {
+    position: relative;
+    overflow: hidden;
+}
+
+/* emoji row */
+._3m_Xw {
+    position: absolute;
+    width: 100%;
+}
+
+/* emoji row container */
+html[dir="ltr"] ._2Wd6U,
+html[dir="rtl"] ._2Wd6U {
+    margin-right: 12px;
+    margin-left: 12px;
+}
+
+/* emoji row container container container */
+._27GWS {
+    white-space: nowrap;
+}
+
+/* emoji*/
+html[dir] ._27GWS .emojik {
+    margin: 6px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+html[dir] .emojik.wa {
+    background-size: 160px 160px;
+}
+
+.emoji.wa.b81,
+.emojik.wa.b81 {
+    background-image: url("img/emoji-81-64_37ebc47.webp");
+}
+
+.emoji.wa.b82,
+.emojik.wa.b82 {
+    background-image: url("img/emoji-82-64_c1eba8a.webp");
+}
+
+.emoji.wa.b97,
+.emojik.wa.b97 {
+    background-image: url("img/emoji-97-64_d321ca5.webp");
+}
+
+.emoji.wa.b105,
+.emojik.wa.b105 {
+    background-image: url("img/emoji-105-64_db6d4e3.webp");
+}
+
+.emoji.wa.b3,
+.emojik.wa.b3 {
+    background-image: url("img/emoji-3-64_0b9fe45.webp");
+}
+
+.emoji.wa.b84,
+.emojik.wa.b84 {
+    background-image: url("img/emoji-84-64_929560c.webp");
+}
+
+.emoji.wa.b24,
+.emojik.wa.b24 {
+    background-image: url("img/emoji-24-64_abf067b.webp");
+}
+
+.emoji.wa.b95,
+.emojik.wa.b95 {
+    background-image: url("img/emoji-95-64_76c46c9.webp");
+}
+
+.emoji.wa.b87,
+.emojik.wa.b87 {
+    background-image: url("img/emoji-87-64_428370e.webp");
+}
+
+.emoji.wa.b7,
+.emojik.wa.b7 {
+    background-image: url("img/emoji-7-64_1dd3846.webp");
+}
+
+.emoji.wa.b25,
+.emojik.wa.b25 {
+    background-image: url("img/emoji-25-64_7d8ffef.webp");
+}
+
+.emoji.wa.b26,
+.emojik.wa.b26 {
+    background-image: url("img/emoji-26-64_c3f1765.webp");
+}
+
+.emoji.wa.b38,
+.emojik.wa.b38 {
+    background-image: url("img/emoji-38-64_8af6206.webp");
+}
+
+.emoji.wa.b66,
+.emojik.wa.b66 {
+    background-image: url("img/emoji-66-64_73011a9.webp");
+}
+
+.emoji.wa.b83,
+.emojik.wa.b83 {
+    background-image: url("img/emoji-83-64_78e2b60.webp");
+}
+
+.emoji.wa.b126,
+.emojik.wa.b126 {
+    background-image: url("img/emoji-126-64_18851e7.webp");
+}
+
+.emoji.wa.b6,
+.emojik.wa.b6 {
+    background-image: url("img/emoji-6-64_72434c2.webp");
+}
+
+.emoji.wa.b101,
+.emojik.wa.b101 {
+    background-image: url("img/emoji-101-64_d5334af.webp");
+}
+
+.emoji.wa.b98,
+.emojik.wa.b98 {
+    background-image: url("img/emoji-98-64_6fb5d64.webp");
+}
+
+.emoji.wa.b67,
+.emojik.wa.b67 {
+    background-image: url("img/emoji-67-64_8830247.webp");
+}
+
+.emoji.wa.b112,
+.emojik.wa.b112 {
+    background-image: url("img/emoji-112-64_d50117f.webp");
+}
+
+.emoji.wa.b106,
+.emojik.wa.b106 {
+    background-image: url("img/emoji-106-64_98dee68.webp");
+}
+
+.emoji.wa.b71,
+.emojik.wa.b71 {
+    background-image: url("img/emoji-71-64_d7e8913.webp");
+}
+
+.emoji.wa.b2,
+.emojik.wa.b2 {
+    background-image: url("img/emoji-2-64_2224eba.webp");
+}
+
+.emoji.wa.b49,
+.emojik.wa.b49 {
+    background-image: url("img/emoji-49-64_7a7637f.webp");
+}
+
+.emoji.wa.b50,
+.emojik.wa.b50 {
+    background-image: url("img/emoji-50-64_bec2fdf.webp");
+}
+
+.emoji.wa.b39,
+.emojik.wa.b39 {
+    background-image: url("img/emoji-39-64_3e4cd80.webp");
+}
+
+.emoji.wa.b128,
+.emojik.wa.b128 {
+    background-image: url("img/emoji-128-64_0276720.webp");
+}
+
+.emoji.wa.b99,
+.emojik.wa.b99 {
+    background-image: url("img/emoji-99-64_6b996dd.webp");
+}
+
+.emoji.wa.b86,
+.emojik.wa.b86 {
+    background-image: url("img/emoji-86-64_4e858e5.webp");
+}
+
+.emoji.wa.b37,
+.emojik.wa.b37 {
+    background-image: url("img/emoji-37-64_87ac96a.webp");
+}
+
+.emoji.wa.b96,
+.emojik.wa.b96 {
+    background-image: url("img/emoji-96-64_05bd55e.webp");
+}
+
+.emoji.wa.b36,
+.emojik.wa.b36 {
+    background-image: url("img/emoji-36-64_1b3d484.webp");
+}
+
+.emoji.wa.b80,
+.emojik.wa.b80 {
+    background-image: url("img/emoji-80-64_c585594.webp");
+}
+
+.emoji.wa.b110,
+.emojik.wa.b110 {
+    background-image: url("img/emoji-110-64_968722c.webp");
+}
+
+.emoji.wa.b108,
+.emojik.wa.b108 {
+    background-image: url("img/emoji-108-64_338835d.webp");
+}
+
+.emoji.wa.b68,
+.emojik.wa.b68 {
+    background-image: url("img/emoji-68-64_4b471be.webp");
+}
+
+.emoji.wa.b69,
+.emojik.wa.b69 {
+    background-image: url("img/emoji-69-64_e607bf5.webp");
+}
+
+.emoji.wa.b109,
+.emojik.wa.b109 {
+    background-image: url("img/emoji-109-64_a6b0372.webp");
+}
+
+.emoji.wa.b40,
+.emojik.wa.b40 {
+    background-image: url("img/emoji-40-64_dea012c.webp");
+}
+
+.emoji.wa.b130,
+.emojik.wa.b130 {
+    background-image: url("img/emoji-130-64_a609d4f.webp");
+}
+
+.emoji.wa.b129,
+.emojik.wa.b129 {
+    background-image: url("img/emoji-129-64_9573645.webp");
+}
+
+.emoji.wa.b65,
+.emojik.wa.b65 {
+    background-image: url("img/emoji-65-64_36f0702.webp");
+}
+
+.emoji.wa.b65,
+.emojik.wa.b65 {
+    background-image: url("img/emoji-65-64_36f0702.webp");
+}
+
+.emoji.wa.b121,
+.emojik.wa.b121 {
+    background-image: url("img/emoji-121-64_16c51db.webp");
+}
+
+.emoji.wa.b113,
+.emojik.wa.b113 {
+    background-image: url("img/emoji-113-64_dba5f1b.webp");
+}
+
+.emoji.wa.b51,
+.emojik.wa.b51 {
+    background-image: url("img/emoji-51-64_5543365.webp");
+}
+
+.emoji.wa.b42,
+.emojik.wa.b42 {
+    background-image: url("img/emoji-42-64_ac92df9.webp");
+}
+
+.emoji.wa.b63,
+.emojik.wa.b63 {
+    background-image: url("img/emoji-63-64_4775444.webp");
+}
+
+.emoji.wa.b64,
+.emojik.wa.b64 {
+    background-image: url("img/emoji-64-64_838a358.webp");
+}
+
+.emoji.wa.b122,
+.emojik.wa.b122 {
+    background-image: url("img/emoji-122-64_67a21f5.webp");
+}
+
+.emoji.wa.b79,
+.emojik.wa.b79 {
+    background-image: url("img/emoji-79-64_1395194.webp");
+}
+
+.emoji.wa.b62,
+.emojik.wa.b62 {
+    background-image: url("img/emoji-62-64_620104d.webp");
+}
+
+.emoji.wa.b41,
+.emojik.wa.b41 {
+    background-image: url("img/emoji-41-64_0bfd00d.webp");
+}
+
+.emoji.wa.b100,
+.emojik.wa.b100 {
+    background-image: url("img/emoji-100-64_1d332e2.webp");
+}
+
+.emoji.wa.b124,
+.emojik.wa.b124 {
+    background-image: url("img/emoji-124-64_f501f99.webp");
+}
+
+.emoji.wa.b125,
+.emojik.wa.b125 {
+    background-image: url("img/emoji-125-64_21b8cd1.webp");
+}
+
+.emoji.wa.b85,
+.emojik.wa.b85 {
+    background-image: url("img/emoji-85-64_fae06f3.webp");
+}
+
+.emoji.wa.b78,
+.emojik.wa.b78 {
+    background-image: url("img/emoji-78-64_5e1660c.webp");
+}
+
+.emoji.wa.b114,
+.emojik.wa.b114 {
+    background-image: url("img/emoji-114-64_e030c5c.webp");
+}
+
+.emoji.wa.b91,
+.emojik.wa.b91 {
+    background-image: url("img/emoji-91-64_52d7641.webp");
+}
+
+.emoji.wa.b70,
+.emojik.wa.b70 {
+    background-image: url("img/emoji-70-64_e4f5f3f.webp");
+}
+
+.emoji.wa.b111,
+.emojik.wa.b111 {
+    background-image: url("img/emoji-111-64_1d7689c.webp");
+}
+
+.emoji.wa.b28,
+.emojik.wa.b28 {
+    background-image: url("img/emoji-28-64_57db7e9.webp");
+}
+
+.emoji.wa.b61,
+.emojik.wa.b61 {
+    background-image: url("img/emoji-61-64_a99489e.webp");
+}
+
+.emoji.wa.b127,
+.emojik.wa.b127 {
+    background-image: url("img/emoji-127-64_77c853f.webp");
+}
+
+.emoji.wa.b27,
+.emojik.wa.b27 {
+    background-image: url("img/emoji-27-64_63c4caa.webp");
+}
+
+.emoji.wa.b5,
+.emojik.wa.b5 {
+    background-image: url("img/emoji-5-64_a55d276.webp");
+}
+
+.emoji.wa.b72,
+.emojik.wa.b72 {
+    background-image: url("img/emoji-72-64_f80d26f.webp");
+}
+
+.emoji.wa.b35,
+.emojik.wa.b35 {
+    background-image: url("img/emoji-35-64_c5081c9.webp");
+}
+
+.emoji.wa.b34,
+.emojik.wa.b34 {
+    background-image: url("img/emoji-34-64_6a75fe0.webp");
+}
+
+.emoji.wa.b33,
+.emojik.wa.b33 {
+    background-image: url("img/emoji-33-64_9674031.webp");
+}
+
+.emoji.wa.b107,
+.emojik.wa.b107 {
+    background-image: url("img/emoji-107-64_03e68f5.webp");
+}
+
+.emoji.wa.b77,
+.emojik.wa.b77 {
+    background-image: url("img/emoji-77-64_33a2551.webp");
+}
+
+.emoji.wa.b22,
+.emojik.wa.b22 {
+    background-image: url("img/emoji-22-64_d0de61a.webp");
+}
+
+.emoji.wa.b103,
+.emojik.wa.b103 {
+    background-image: url("img/emoji-103-64_bef85df.webp");
+}
+
+.emoji.wa.b21,
+.emojik.wa.b21 {
+    background-image: url("img/emoji-21-64_2a928c7.webp");
+}
+
+.emoji.wa.b23,
+.emojik.wa.b23 {
+    background-image: url("img/emoji-23-64_951eaf0.webp");
+}
+
+.emoji.wa.b20,
+.emojik.wa.b20 {
+    background-image: url("img/emoji-20-64_5da7428.webp");
+}
+
+.emoji.wa.b8,
+.emojik.wa.b8 {
+    background-image: url("img/emoji-8-64_270a5f3.webp");
+}
+
+.emoji.wa.b4,
+.emojik.wa.b4 {
+    background-image: url("img/emoji-4-64_17c7395.webp");
+}
+
+.emoji.wa.b76,
+.emojik.wa.b76 {
+    background-image: url("img/emoji-76-64_ad38c5f.webp");
+}
+
+.emoji.wa.b104,
+.emojik.wa.b104 {
+    background-image: url("img/emoji-104-64_87d3d34.webp");
+}
+
+.emoji.wa.b29,
+.emojik.wa.b29 {
+    background-image: url("img/emoji-29-64_a5c7aae.webp");
+}
+
+.emoji.wa.b31,
+.emojik.wa.b31 {
+    background-image: url("img/emoji-31-64_3e451ea.webp");
+}
+
+.emoji.wa.b94,
+.emojik.wa.b94 {
+    background-image: url("img/emoji-94-64_e15b9d8.webp");
+}
+
+.emoji.wa.b30,
+.emojik.wa.b30 {
+    background-image: url("img/emoji-30-64_3f057f6.webp");
+}
+
+.emoji.wa.b102,
+.emojik.wa.b102 {
+    background-image: url("img/emoji-102-64_e41e707.webp");
+}
+
+.emoji.wa.b123,
+.emojik.wa.b123 {
+    background-image: url("img/emoji-123-64_b8dc46e.webp");
+}
+
+.emoji.wa.b89,
+.emojik.wa.b89 {
+    background-image: url("img/emoji-89-64_8189c09.webp");
+}
+
+.emoji.wa.b90,
+.emojik.wa.b90 {
+    background-image: url("img/emoji-90-64_c7cdfc4.webp");
+}
+
+.emoji.wa.b32,
+.emojik.wa.b32 {
+    background-image: url("img/emoji-32-64_8e8748b.webp");
+}
+
+.emoji.wa.b88,
+.emojik.wa.b88 {
+    background-image: url("img/emoji-88-64_21fa232.webp");
+}
+
+.emoji.wa.b93,
+.emojik.wa.b93 {
+    background-image: url("img/emoji-93-64_251748f.webp");
+}
+
+.emoji.wa.b1,
+.emojik.wa.b1 {
+    background-image: url("img/emoji-1-64_2daeeb8.webp");
+}
+
+.emoji.wa.b74,
+.emojik.wa.b74 {
+    background-image: url("img/emoji-74-64_e8a7519.webp");
+}
+
+.emoji.wa.b73,
+.emojik.wa.b73 {
+    background-image: url("img/emoji-73-64_efbc9b8.webp");
+}
+
+.emoji.wa.b75,
+.emojik.wa.b75 {
+    background-image: url("img/emoji-75-64_ec05a92.webp");
+}
+
+.emoji.wa.b92,
+.emojik.wa.b92 {
+    background-image: url("img/emoji-92-64_10d01ec.webp");
+}
+
+.emoji.wa.b9,
+.emojik.wa.b9 {
+    background-image: url("img/emoji-9-64_7a609af.webp");
+}
+
+.emoji.wa.b0,
+.emojik.wa.b0 {
+    background-image: url("img/emoji-0-64_275ab2d.webp");
+}
+
+.emoji.wa.b10,
+.emojik.wa.b10 {
+    background-image: url("img/emoji-10-64_4bc31db.webp");
+}
+
+.emoji.wa.b14,
+.emojik.wa.b14 {
+    background-image: url("img/emoji-14-64_893eec6.webp");
+}
+
+.emoji.wa.b11,
+.emojik.wa.b11 {
+    background-image: url("img/emoji-11-64_a662a91.webp");
+}
+
+.emoji.wa.b13,
+.emojik.wa.b13 {
+    background-image: url("img/emoji-13-64_5d916f5.webp");
+}
+
+.emoji.wa.b18,
+.emojik.wa.b18 {
+    background-image: url("img/emoji-18-64_1e2bb45.webp");
+}
+
+.emoji.wa.b16,
+.emojik.wa.b16 {
+    background-image: url("img/emoji-16-64_d41b50c.webp");
+}
+
+.emoji.wa.b12,
+.emojik.wa.b12 {
+    background-image: url("img/emoji-12-64_1a6e349.webp");
+}
+
+.emoji.wa.b19,
+.emojik.wa.b19 {
+    background-image: url("img/emoji-19-64_6fda0bc.webp");
+}
+
+.emoji.wa.b15,
+.emojik.wa.b15 {
+    background-image: url("img/emoji-15-64_6bd244c.webp");
+}
+
+.emoji.wa.b17,
+.emojik.wa.b17 {
+    background-image: url("img/emoji-17-64_1390219.webp");
+}
+
+html[dir] .emoji,
+html[dir] .emojik {
+    border: 0;
+}
+
+.emojik {
+    width: 32px;
+    height: 32px;
+    image-rendering: -webkit-optimize-contrast;
+}
+
+.emoji,
+.emojik {
+    display: inline-block;
+    vertical-align: top;
+    zoom: 1;
+}
