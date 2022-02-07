@@ -218,6 +218,43 @@ class WppconnectController extends Controller
     }
 
 
+
+
+    /**
+     * Show the qr code for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */ 
+    public function setSeenMessage(Request $request)
+    {
+        $response = "";
+        $url = $this->url;
+        $session = session('session');
+        $token = session('token');
+        $userId = $request->input('user_id');
+
+        $to = "/api/$session/send-seen";
+        if($token && $session && session('init')){
+            Wppconnect::make($url);
+            $response = Wppconnect::to($to)->withBody([
+                "phone" => $userId 
+            ])->withHeaders([
+                'Authorization' => 'Bearer '.$token
+            ])->asJson()->post();
+            $response = json_decode($response->getBody()->getContents(),true);
+        }
+
+        return response()->json(array(
+            'response'=> $response,
+        ), 200);
+    }
+
+
+
+
+
+
+
     /**
      * Show the qr code for creating a new resource.
      *

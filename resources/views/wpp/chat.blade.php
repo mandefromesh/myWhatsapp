@@ -13,9 +13,11 @@
             <!-- user/groups item 1-->
             <div tabindex="0" aria-selected="true" role="row">
                 <div data-testid="cell-frame-container"
+                    id = "user_{{$chat['id']['user']}}"
                     data-userid="{{$chat['id']['user']}}"
                     data-isgroup="{{($chat['isGroup'])?'yes':'no'}}" 
-                    data-userserialized="{{$chat['id']['_serialized']}}" 
+                    data-userserialized="{{$chat['id']['_serialized']}}"
+                    
                     class="users-group-cell-frame cell-frame">
                     <div class="users-group-img-wrapper">
                         <div class="users-group-img-container">
@@ -39,6 +41,7 @@
                                 </div>
                                 @if($chat['contact']['profilePicThumbObj']['eurl'] != '')
                                 <img
+                                    id = "user_img_{{$chat['id']['user']}}" 
                                     src="{{$chat['contact']['profilePicThumbObj']['eurl']}}"
                                     alt="" draggable="false" class="user-real-img user-real-img-opcty-1 vsblty-vsbl"
                                     style="visibility: visible;">
@@ -51,7 +54,7 @@
                         <div role="gridcell" aria-colindex="2"
                             class="users-group-name-time-grid">
                             <div class="users-group-name-content">
-                                <span dir="auto" title="{{$chat['contact']['formattedName']}}"
+                                <span dir="auto" id="user_name_{{$chat['id']['user']}}" title="{{$chat['contact']['formattedName']}}"
                                     class="user-name-txt">{{$chat['contact']['formattedName']}}
                                 </span>
                             </div>
@@ -76,7 +79,7 @@
                                     <div class="users-group-unread-msg-counter"
                                         style="transform: scaleX(1) scaleY(1); opacity: 1;">
                                         <span class="unread-msg-counter"
-                                            aria-label="{{$chat['unreadCount']}} unread message">{{$chat['unreadCount']}}</span>
+                                            id = "unread_msg_{{$chat['id']['user']}}">{{$chat['unreadCount']}}</span>
                                     </div>
                                     @endif
                                 </span>
@@ -107,10 +110,12 @@
     var currnt_chat_id = "";
     var is_current_group = "no";
     var currnet_chat_hash = "";
+    var all_chat_hash = "{!! $chats_md5 !!}";
+    var intervalusersId;
+    sessionStorage.setItem("is_all_user_check", "true");
     var msg_ary = [];
     var intervalId;
     var last_elem_id = "";
-
     // twemoji.size = "svg";
     // twemoji.ext = ".svg";
     // new EmojiPicker({
@@ -144,6 +149,9 @@
             var dataId = "true_120363020803854156@g.us_3EB0A819A9C7FD098D2D";
             $(".message-out[data-id='" + dataId +"'] .msg-text-read-status span").removeClass("msg-text-read-color");
         */
+        
+        setAllChatTimer();
+
         $(".users-group-cell-frame").on("click",function(){
             var userId = $(this).attr("data-userid");
             var userSrializeId = $(this).attr("data-userserialized");
@@ -401,6 +409,7 @@
             }
         }
         getMessages(userSrializeId, isGroup);
+        setSeenMsgs(userSrializeId);
         intervalId = setInterval(function(user_id, is_group){
             //console.log(user_id, is_group)
             //getMessages(user_id, is_group);
@@ -409,6 +418,50 @@
         //$(".msg-text-content").emojioneArea()
     }
 
+    function setSeenMsgs(userSrializeId){
+        let userId = userSrializeId.replace(/[@c.us,@c.us]/g, "");
+        console.log("set seen msg - TODO" , userId);
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type:'POST',
+            url:'/wpp/setseen',
+            data: {
+                user_id : userId
+            },
+            success:function(data) {
+                //$("#msg").html(data.msg);
+                console.log(data);
+                if(data.response.status == "success"){
+                    console.log("set zero unread count - TODO" , userId);
+                    $("#unread_msg_" + userId).html(0)
+                }
+                
+            }
+        });
+    }
+
+
+    function setAllChatTimer(){
+        
+        if(intervalusersId !== undefined){
+            clearInterval(intervalusersId);
+        }
+        getAllChats();
+        intervalusersId = setInterval(function(){
+            getAllChats();
+
+            let is_check_users = sessionStorage.getItem("is_all_user_check");
+            console.log("is_check_users:", is_check_users)
+            if(is_check_users == "false"){
+                clearInterval(intervalusersId);
+            }
+        },3000);
+    }
     function getMessages(userId, isGroup) {
         console.log(userId)
         $.ajaxSetup({
@@ -437,6 +490,83 @@
             }
         });
     }
+
+
+    //user list and new msg count
+    function getAllChats() {
+        //console.log("old hash", all_chat_hash)
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type:'POST',
+            url:'/wpp/chatajax',
+            // data: {
+            //     user_id : userId,
+            //     is_group: isGroup
+            // },
+            success:function(data) {
+                
+                //console.log(data);
+                if(data.conn_status && data.conn_status.message == "Connected"){
+
+                    //console.log("new hash", data.chats_md5)
+                    if(data.response.status == "success" && data.chats_md5 != all_chat_hash){
+                        all_chat_hash = data.chats_md5; 
+                        setUsers(data.response.response);
+                    }
+                }
+                
+            },
+            error: function(response){
+                console.log(response);
+            }
+        });
+    }
+
+    function setUsers(chatUsersAry){
+        console.log("chatUsersAry" , chatUsersAry)
+        if(chatUsersAry.length && chatUsersAry.length > 0){ 
+            chatUsersAry.forEach(function(usr){
+                let user_Id = usr.id.user;
+                //console.log("user dom: " , $("#user_" + user_Id))
+                if($("#user_" + user_Id).length > 0){
+                    //check user name
+                    let userName = $("#user_name_" + user_Id).html();
+                    if(userName != usr.contact.formattedName){
+                        $("#user_name_" + user_Id).html(usr.contact.formattedName);
+                        $("#user_name_" + user_Id).attr("title", usr.contact.formattedName)
+                    }
+                    //check user image
+                    if($("#user_img_" + user_Id).length > 0){
+                        let userImg = $("#user_img_" + user_Id).attr("src");
+                        if(userImg != usr.contact.profilePicThumbObj.eurl){
+                            $("#user_img_" + user_Id).attr("src", usr.contact.profilePicThumbObj.eurl)
+                        }
+                    }else{
+                        //add imgae - TODO
+                    }
+                    //check user unread
+                    let unread_count = $("#unread_msg_" + user_Id).html();
+                    if(unread_count != usr.unreadCount){
+                        //Add sound new msg - TODO
+                        $("#unread_msg_" + user_Id).html(usr.unreadCount)
+                    }
+
+                }else{
+                    addNewUser(usr);
+                }
+            })
+        }
+    }
+
+    function addNewUser(user){
+        console.log("add(append) new user - TODO" , user)
+    }
+
 
     function setMsgs(msgs, isGroup, userId, new_hash){
         var writMsgArr;
