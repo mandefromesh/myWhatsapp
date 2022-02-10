@@ -1991,23 +1991,51 @@ html[dir] .textbox-container .textbox-input {
 } */
 
 /* Voice message button */
-html[dir] .voice-msg-btn-wrapper {
-    padding: 5px 10px;
-}
-
 .voice-msg-btn-wrapper {
     box-sizing: border-box;
-    display: flex;
+    /* display: flex; */
+    display: none;
     align-items: center;
     justify-content: center;
     min-height: 52px;
     width: 37px;
+}
+html[dir] .voice-msg-btn-wrapper {
+    padding: 5px 10px;
 }
 
 .voice-msg-btn {
     color: rgb(81, 88, 92);
 }
 
+
+
+/* Send message button */
+.send-msg-btn-wrapper {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    width: 37px;
+  }
+  html[dir] .send-msg-btn-wrapper {
+    padding: 5px 10px;
+  }
+  
+  .send-msg-btn {
+    flex: 0 0 auto;
+    color: #51585c;
+    opacity: .9;
+  }
+  
+  .send-msg-btn-icon {
+    display: block;
+  }
+
+    html[dir="rtl"] .send-msg-btn-icon {
+        transform: scaleX(-1);
+    }
 
 /* Image and caption  */
 

@@ -232,6 +232,9 @@
             
         })
 
+        $(".send-msg-btn").on("click", function(){
+            sendTextMsg();
+        })
 
         //
         $(".chat-container").on("scroll", function(){
@@ -848,6 +851,9 @@
         //main_msg_textbox
         //let txtMsg = $("#main_msg_textbox").text();
         let txtMsg = $("#main_msg_textbox").html();
+        if(txtMsg == ""){
+            return false;
+        }
         //var sendTo = currnt_chat_id;
 
         console.log(txtMsg)
