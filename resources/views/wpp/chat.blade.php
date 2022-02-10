@@ -251,8 +251,10 @@
             scrollToElem(last_elem_id);
         });
 
-        //
-
+        $(".close_replay_msg_btn_btn").on("click", function(){
+            $(".replay_msg_preview_area").hide();
+            $(".replay_msg_preview_content").html("")
+        });
 
 
         $.contextMenu({
@@ -262,7 +264,18 @@
                 var m = "clicked: " + key;
                 //data-serializedid
                 //data-id
-                console.log(m, chatItem.data("id"), chatItem.data("serializedid")); 
+                let chat_msg_id = chatItem.data("id");
+                let chat_msg_serializedid = chatItem.data("serializedid");
+
+                console.log(m,chat_msg_id , chat_msg_serializedid );
+                if(key == "replay"){
+                    console.log(chatItem );
+                    let replay_msg_content = getReplayMsgContent(chatItem);
+                    $(".replay_msg_preview_content").html(replay_msg_content)
+                    //let chat_msg_content = $("#" + chat_msg_id).html();
+
+                    $(".replay_msg_preview_area").show();
+                }
             },
             items: {
             //     "edit": {name: "Edit", icon: "edit"},
@@ -340,6 +353,51 @@
 
     });
 
+
+    function getReplayMsgContent(chatItem){
+        let sender_name = chatItem.find(".chat-msg-content .msg-sender-name").html();
+        let msg_body = chatItem.find(".msg-text-content .copyable-text span").html();
+        let image_preview = chatItem.find(".image-preview-wrapper");
+        let image_preview_data = ""; 
+        if(image_preview.length > 0){
+            //console.log("image_preview:", image_preview)
+            image_preview_data = $(image_preview[0]).find("img").attr("src");
+        }
+        html = `<div class="relay-container-width">
+                    <div class="relay-container-btn-role" > 
+                        <span class="relay-bg-color-1 relay-bg-flex"></span> 
+                        <div class="relay-msg-wrapper">
+                            <div class="relay-chat-msg-content">
+                                <div class="msg-sender-details msg-sender-color" role="button"> 
+                                    <span dir="auto" class="msg-sender-name text-visibility"> 
+                                        ${sender_name} 
+                                    </span> 
+                                </div> 
+                                <div class="relay-msg-text-content" dir="rtl" role="button"> 
+                                    <span dir="auto" class="quoted-mention text-visibility">
+                                        ${msg_body}
+                                    </span> 
+                                </div>
+                            </div> 
+                        </div>`;
+                if(image_preview_data != ""){
+                    html += `<div class="replay-img-wrapper">
+                                <div class="replay-img-content">
+                                    <div class="replay-img-row">
+                                        <div class="replay-img-container">
+                                            <div class="img-content"
+                                                style="background-image: url(&quot;${image_preview_data}&quot;);">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+                }
+            html += '</div>' +
+                '</div>';
+
+        return html;
+    }
 
     function onImageClick(obj, serialize_id, mimetype){
         let sessionImg =  getMsgImageBlob(serialize_id);

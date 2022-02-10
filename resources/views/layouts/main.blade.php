@@ -365,13 +365,52 @@
                                 </div>
                             </div>
 
-                            <!-- emoji area -->
-                            <div class="wasap-emoji-area">
-                                <div class="wasap_emoji">
-                                    <emoji-picker></emoji-picker>
+
+                            <!-- text msg action area -->
+                            <div class="text_msg_action_area">
+                                <div class="text_msg_action_wrapper">
+
+                                    <!-- emoji area -->
+                                    <div class="wasap-emoji-area">
+                                        <div class="wasap_emoji">
+                                            <emoji-picker></emoji-picker>
+                                        </div>
+                                    </div>
+
+                                     <!-- replay msg preview area -->
+                                    <div class="replay_msg_preview_area">
+                                        <div style="transform: translateY(0px);" class="">
+                                            <div class="replay_msg_preview_wrapper">
+                                                <div class="replay_msg_preview_content">
+
+                                                    <!-- get inner html of .relay-container-->
+                                                     <!--                                                     
+                                                    <div class="relay-container-width">
+                                                    ...  
+                                                    </div>
+                                                    -->
+                                                </div>
+
+                                                <div class="close_replay_msg_btn">
+                                                    <div role="button" class="close_replay_msg_btn_btn">
+                                                        <span data-testid="x" data-icon="x" class="">
+                                                            <svg viewBox="0 0 24 24" width="24" height="24" class="">
+                                                                <path fill="currentColor"
+                                                                    d="m19.1 17.2-5.3-5.3 5.3-5.3-1.8-1.8-5.3 5.4-5.3-5.3-1.8 1.7 5.3 5.3-5.3 5.3L6.7 19l5.3-5.3 5.3 5.3 1.8-1.8z">
+                                                                </path>
+                                                            </svg>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="display: none;" hidden=""></div>
+                                        </div>
+                                    </div>
+
+
+
                                 </div>
                             </div>
-
                         </footer>
                         <div hidden="" style="display: none;"></div>
                     </div>

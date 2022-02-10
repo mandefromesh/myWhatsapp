@@ -2106,6 +2106,38 @@ html[dir] .img-content {
 }
 
 
+
+
+    /* text msg action area */
+    .text_msg_action_area {
+        position: absolute;
+        top: 0;
+        width: 100%;
+    }
+
+    html[dir="rtl"] .text_msg_action_area {
+        right: 0;
+    }
+
+    html[dir="ltr"] .text_msg_action_area {
+        left: 0;
+    }
+
+    .text_msg_action_wrapper {
+        position: absolute;
+        bottom: 0;
+        box-sizing: border-box;
+        width: 100%;
+    }
+
+    html[dir="rtl"] .text_msg_action_wrapper {
+        right: 0;
+    }
+
+
+
+
+
 /* emoji area */
 /* div.wasap-emoji-area */
 html[dir="rtl"] .wasap-emoji-area {
@@ -2178,4 +2210,64 @@ html[dir="ltr"] .smiley-close-btn div {
     margin-left: 1px;
 }
 
+
+/* replay msg preview area */
+.replay_msg_preview_area {
+    position: relative;
+    display: none;
+}
+
+.replay_msg_preview_wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+html[dir] .replay_msg_preview_wrapper {
+    padding-top: 5px;
+    background-color: #f0f0f0;
+}
+
+html[dir="rtl"] .replay_msg_preview_wrapper {
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+html[dir="ltr"] .replay_msg_preview_wrapper {
+    border-left: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.replay_msg_preview_content {
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+html[dir] .replay_msg_preview_content {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+}
+
+html[dir="rtl"] .replay_msg_preview_content {
+    margin-right: 66px;
+}
+
+html[dir="ltr"] .replay_msg_preview_content {
+    margin-left: 66px;
+}
+
+/* close replay msg btn */
+.close_replay_msg_btn {
+    box-sizing: border-box;
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    min-width: 64px;
+    color: #919191;
+}
+
+html[dir] .close_replay_msg_btn {
+    background-color: #f0f0f0;
+}
 
