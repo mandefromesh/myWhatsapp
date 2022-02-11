@@ -37,6 +37,7 @@
     <!-- <script src="//twemoji.maxcdn.com/twemoji.min.js"></script> -->
     <!-- <script src="{{ url('emoji_picker/vanillaEmojiPicker.js') }}"></script> -->
     <!-- <script src="{{ url('wasap_emoji/wasap_emoji.js') }}"></script> -->
+    <script src="{{ url('sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
     
     <link href="{{ url('emoji-mart-outside-react/emoji-mart/css/emoji-mart.css') }}" rel="stylesheet">
     <script src="{{ url('emoji-mart-outside-react/dist/main.js') }}" type="text/javascript"></script>

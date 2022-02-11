@@ -340,7 +340,39 @@
             // z-index can be set for each menu for layering if necessary
             zIndex: 1000,  
             popItemClick: function(e){
-                console.log("menu", $(this).attr("id"))
+                let menu_type = $(this).attr("id");
+                console.log("menu", menu_type)
+                if(menu_type == "media"){
+                    const file = Swal.fire({
+                        title: 'Select image',
+                        html: '<div class="upload-img-preview" style="width:400px;height:200px;"></div>',
+                        input: 'file',
+                        inputAttributes: {
+                            'accept': 'image/*',
+                            'aria-label': 'Upload your profile picture'
+                        },
+                        inputValidator: (result) => {
+                            console.log(result)
+                        }
+                    })
+                    $(".swal2-file").on("change", function(result){
+                        console.log("file result: " , result.target.files[0])
+                        if (result.target.files[0]) {
+                            const reader = new FileReader()
+                            reader.onload = (e) => {
+                                // Swal.fire({
+                                // title: 'Your uploaded picture',
+                                // imageUrl: e.target.result,
+                                // imageAlt: 'The uploaded picture'
+                                // })
+                                let htmlImg = "<img src='" + e.target.result + "' height='200' >";
+                                $(".upload-img-preview").html(htmlImg);
+                            }
+                            reader.readAsDataURL(result.target.files[0])
+                        }         
+                    })
+
+                }
             }
         });
 
