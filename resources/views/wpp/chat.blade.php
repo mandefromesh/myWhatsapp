@@ -112,6 +112,7 @@
     var currnet_chat_hash = "";
     var all_chat_hash = "{!! $chats_md5 !!}";
     var intervalusersId;
+    var chat_replat_msg_serializedid = "";
     sessionStorage.setItem("is_all_user_check", "true");
     var msg_ary = [];
     var intervalId;
@@ -256,7 +257,8 @@
 
         $(".close_replay_msg_btn_btn").on("click", function(){
             $(".replay_msg_preview_area").hide();
-            $(".replay_msg_preview_content").html("")
+            $(".replay_msg_preview_content").html("");
+            chat_replat_msg_serializedid = "";
         });
 
 
@@ -272,7 +274,8 @@
 
                 console.log(m,chat_msg_id , chat_msg_serializedid );
                 if(key == "replay"){
-                    console.log(chatItem );
+                    //console.log(chatItem );
+                    chat_replat_msg_serializedid = chat_msg_serializedid;
                     let replay_msg_content = getReplayMsgContent(chatItem);
                     $(".replay_msg_preview_content").html(replay_msg_content)
                     //let chat_msg_content = $("#" + chat_msg_id).html();
@@ -473,7 +476,7 @@
         setSeenMsgs(userSrializeId);
         intervalId = setInterval(function(user_id, is_group){
             //console.log(user_id, is_group)
-            //getMessages(user_id, is_group);
+            getMessages(user_id, is_group);
         },1000, userSrializeId, isGroup);
 
         //$(".msg-text-content").emojioneArea()
@@ -524,7 +527,7 @@
         },3000);
     }
     function getMessages(userId, isGroup) {
-        console.log(userId)
+        //console.log(userId)
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -540,7 +543,7 @@
             },
             success:function(data) {
                 //$("#msg").html(data.msg);
-                console.log(data);
+                //console.log(data);
                 if(data.status == "success"){
                     var new_hash = data.chats_md5; 
                     if(currnt_chat_id != userId || currnet_chat_hash != new_hash){
@@ -691,6 +694,7 @@
         });
         $(".chat-container-region .emoji").width("7%")
     }
+
     function createMsgHtml(msg, isGroup){
         var in_or_out = 'message-in';
         var tail_data = "tail-out";
@@ -805,6 +809,99 @@
         return [html,elem_id];
     }
 
+
+
+
+
+    // function createSendMsgHtml(msg, isGroup){
+    //     var in_or_out = 'message-in';
+    //     var tail_data = "tail-out";
+    //     var html = "";
+    //     var elem_id = msg.id.id;
+    //     //var tail_class = "chat-item-tail"
+    //     if(msg.id.fromMe){
+    //         in_or_out = 'message-out';
+    //         tail_data = 'tail-in';
+    //     }
+    //     html = '<div tabindex="-1" class="chat-item focusable-list-item ' + in_or_out +  '"' + 
+    //         'data-id="' + msg.id.id + '" id="' + msg.id.id + '" data-serializedid="'+msg.id._serialized+'">' + 
+    //         '<span></span>' + //?
+    //         '<div class="chat-item-content chat-item-wide chat-item-shape">'; 
+    //         if(msg.quotedMsg != ""){
+    //             html += '<span data-testid="'+tail_data+'" data-icon="'+tail_data+'" class="chat-item-tail"></span>'; 
+    //         }
+    //         html += '<div class="chat-msg-container chat-msg-container-shadow">' + 
+    //                     '<div class="chat-msg-content">' + 
+    //                         '<div class="msg-sender-details msg-sender-color " role="">' +
+    //                             '<span dir="auto" class="msg-sender-name msg-sender-cursor text-visibility">' + 
+    //                                 msg.from + 
+    //                             '</span>' + 
+    //                         '</div>' + 
+    //                         '<div class="msg-text-container copyable-text" data-pre-plain-text="">';
+            
+    //         if(msg.quotedMsg != ""){
+    //             html += msg.quotedMsg ;
+    //         }
+    //         if(msg.type == "image" ||  msg.type == "video"){
+    //             html += '<div role="button" class="image-preview-area-btn"' + 
+    //                     'onclick="onImageClick(this, \'' + msg.id._serialized + '\' , \'' + msg.mimetype+ '\')" ' + 
+    //                     'style="width: 330px; height: 330px;">' +
+    //                     '<div class="image-preview-area-container">' + 
+    //                         '<div class="image-preview-wrapper">' + 
+    //                             '<img src="data:' + msg.mimetype + ';base64,' + msg.body + '" class="image-preview-noloaded-img" >' + 
+    //                         '</div>'+
+    //                         '<div class="image-preview-wrapper image-preview-loaded-img">';
+    //                         if(msg.type == "image"){
+    //                             html += '<img id="prev_img_' + msg.id.id +'" src="' + getMsgImageBlob(msg.id._serialized) + '" >';
+    //                         }
+    //                         if(msg.type == "video"){
+    //                             html += '<video id="prev_img_' + msg.id.id +'" controls>' + 
+    //                                         '<source  src="' + getMsgImageBlob(msg.id._serialized) + '" >' + 
+    //                                     '</video>';
+    //                         }
+    //                     html += '</div></div></div>';
+    //         }
+    //         html += '<div class="msg-text-content">\n' + 
+    //                     '<span dir="rtl" class="text-visibility selectable-text copyable-text">\n' + 
+    //                         '<span>' + ((msg.type == "image" ||  msg.type == "video")?msg.caption:msg.body) + '</span>\n' + 
+    //                     '</span>\n' + 
+    //                     '<span class="msg-text-foot-spacer"></span>\n' + 
+    //                 '</div>\n' +
+    //             '</div>' + 
+    //             '<div class="msg-text-foot">' + 
+    //                 '<div class="msg-time-container" data-testid="msg-meta">' + 
+    //                     '<span class="msg-time-text" dir="auto">' + 
+    //                         msg.t + 
+    //                     '</span>' + 
+    //                 '</div>' + 
+    //             '</div>' +
+    //         '</div>' + 
+    //         //'<span><!-- on hover item create arrow down button --></span>' + 
+    //         '</div>' + 
+    //     '</div>' +
+    //     '</div>';
+
+    //     //msg.body
+    //     //msg.from
+    //     //msg.t //> timestamp
+    //     //msg.id.fromMe
+    //     //msg.id.id
+    //     //msg.id._serialized
+    //     return [html,elem_id];
+    // }
+
+
+
+
+
+
+
+
+
+
+
+
+
     function getMsgImageBlob(msg_serialized_id){
         let imagBase64 = sessionStorage.getItem(msg_serialized_id);
         //console.log("imagBase64: " , imagBase64)
@@ -838,11 +935,20 @@
         }
     }
 
-    function scrollToElem(elem_id){
+    function scrollToElem(elem_id, option){
+        let defaultOptions = {
+            behavior: "smooth",
+            block: "end"
+        }
+
+        if(option !== null && option !== undefined){
+            defaultOptions = option;
+        }
+
         if(elem_id != "" && elem_id !== null && elem_id !== undefined){
             var element = document.getElementById(elem_id);
             if(element  !== null )
-                element.scrollIntoView({behavior: "smooth"}); //, block: "end", inline: "nearest"
+                element.scrollIntoView(defaultOptions); //, block: "end", inline: "nearest"
         }
 
     }
@@ -856,13 +962,8 @@
         }
         //var sendTo = currnt_chat_id;
 
-        console.log(txtMsg)
-        // let cleanText = txtMsg.replace(/<span class=\"/g,"{[!")
-        //                     .replace(/" style="background-position: /g,"|")
-        //                     .replace(/;" tabindex="-1" data-emoji-index="/g,"|")
-        //                     .replace(/\"><\/span>/g,"!]}")
-        //console.log(cleanText)
-        //return false;
+        //console.log(txtMsg)
+
         //txtMsg = escapeHtml(txtMsg);
         console.log("send to:", currnt_chat_id, is_current_group);
 
@@ -879,13 +980,35 @@
             data: {
                 send_to : currnt_chat_id.replace(/[@c.us,@g.us]/g, ""),
                 is_group: is_current_group,
-                repaly_msg_id: "",
+                repaly_msg_id: chat_replat_msg_serializedid,
                 msg_body: txtMsg
             },
             success:function(data) {
-                console.log(data);
-                
-                
+                //console.log("send status msg :", data);
+                $("#main_msg_textbox").html("");
+                if(chat_replat_msg_serializedid != ""){
+                    // $(".replay_msg_preview_area").hide();
+                    // $(".replay_msg_preview_content").html("");
+                    // chat_replat_msg_serializedid = "";
+                    $(".close_replay_msg_btn_btn").click();
+                }
+                if(data != "" && data !== null && data !== undefined){
+                    if(data.response && data.response.status && data.response.status == "success"){
+                        // let msg = data.response.response[0];
+                        // let isGroup = (is_current_group == "yes")?true:false;
+                        // let html_data = createMsgHtml(msg, isGroup);
+                        // $(".chat-container-region").append(html_data[0])
+                        // setMsgsTail();
+                        // scrollToElem(html_data[1]);
+                    }
+                }
+                //createSendMsgHtml(msg, isGroup)
+            },
+            error: function(reponse){
+                $("#main_msg_textbox").html("");
+                if(chat_replat_msg_serializedid != ""){
+                    $(".close_replay_msg_btn_btn").click();
+                }
             }
         });
     }
