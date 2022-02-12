@@ -249,6 +249,7 @@ class WppconnectController extends Controller
 
 
             ///$userId?isGroup=$isgroup&includeMe=$incMe&includeNotifications=$incNotif
+        /*
         $to = "/api/$session/all-chats-with-messages";
         if($token && $session && session('init')){
             Wppconnect::make($url);
@@ -269,25 +270,64 @@ class WppconnectController extends Controller
                 }
             }
         }
-            //
-        // $to = "/api/$session/load-messages-in-chat/$userId";
-        // if($token && $session && session('init')){
-        //     Wppconnect::make($url);
-        //     $response = Wppconnect::to($to)->withHeaders([
-        //         'Authorization' => 'Bearer '.$token
-        //     ])->asJson()->get();
-        //     $response = json_decode($response->getBody()->getContents(),true);
-        // }
+        */
         
-        $chats_md5 = md5(json_encode($chatMsgs));
+        $phon_num = str_replace(array("@c.us","@g.us"), array("",""), $userId);
+        
+        
+        $to = "/api/$session/chat-by-id/$phon_num?isGroup=$isgroup" ;
+        if($token && $session && session('init')){
+            Wppconnect::make($url);
+            $response = Wppconnect::to($to)->withHeaders([
+                'Authorization' => 'Bearer '.$token 
+            ])->asJson()->get();
+            $response = json_decode($response->getBody()->getContents(),true);
+        }
+        
+        
+        $chats_md5 = md5(json_encode($response));
 
         return response()->json(array(
-            'response'=> $chatMsgs,
-            'status' => $status,
+            'response'=> $response,
+            'status' => ($response != "" && $response["status"])?$response["status"]:"fail",
             'chats_md5' => $chats_md5
         ), 200);
     }
 
+
+    /**
+     * Show the qr code for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */ 
+    public function getEarlierMessages(Request $request)
+    {
+        $response = "";
+        $url = $this->url;
+        $session = session('session');
+        $token = session('token');
+        //?isGroup=false&includeMe=true&includeNotifications=false
+        $userId = $request->input('user_id');
+        $isgroup = ($request->input('is_group') == 'yes')?true:false;
+        
+        $to = "/api/$session/load-earlier-messages/$userId?isGroup=$isgroup" ;
+        if($token && $session && session('init')){
+            Wppconnect::make($url);
+            $response = Wppconnect::to($to)->withHeaders([
+                'Authorization' => 'Bearer '.$token 
+            ])->asJson()->get();
+            $response = json_decode($response->getBody()->getContents(),true);
+        }
+        
+        
+        $chats_md5 = md5(json_encode($response));
+
+        return response()->json(array(
+            'response'=> $response,
+            'status' => ($response != "" && $response["status"])?$response["status"]:"fail",
+            'chats_md5' => $chats_md5
+        ), 200);
+    }
 
     /**
      * Show the qr code for creating a new resource.

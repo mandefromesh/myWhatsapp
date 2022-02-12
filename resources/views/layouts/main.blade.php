@@ -48,6 +48,10 @@
 </head>
 <body>
 <div id="app">
+
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+            @csrf
+        </form>
         <div tabindex="-1" class="app-wrapper app-wrapper-web font-fix os-win">
             <div tabindex="-1" class="main-container two">
                 <!-- <div class="_3DJrq"></div> -->
@@ -103,7 +107,7 @@
                                         </div>
                                         <!-- menu button -->
                                         <div class="menu-btn-container">
-                                            <div aria-disabled="false" role="button" tabindex="0" class="btns-content"
+                                            <div aria-disabled="false" role="button" tabindex="0" class="btns-content menu-btn-btn"
                                                 title="Menu" aria-label="Menu">
                                                 <span data-testid="menu" data-icon="menu" class="">
                                                     <svg viewBox="0 0 24 24" width="24" height="24" class="">

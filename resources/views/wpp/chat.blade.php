@@ -107,6 +107,7 @@
 @section('foot_script')
 
 <script type="text/javascript">
+    var types_arry = ["chat", "image","video", "audio", "ptt"];
     var currnt_chat_id = "";
     var is_current_group = "no";
     var currnet_chat_hash = "";
@@ -160,7 +161,7 @@
             var userName = $(this).find(".user-name-txt").text();
             var userImg = $(this).find(".user-real-img").attr("src");
             is_current_group = isGroup;
-            console.log("users-group-cell-frame: ", userSrializeId, isGroup)
+            //console.log("users-group-cell-frame: ", userSrializeId, isGroup)
             //avater-img-container
             if(userImg == "" || userImg === undefined || userImg == null){
                 if($(".main-head-img-wrapper .avater-img-container img").length > 0){
@@ -302,8 +303,30 @@
 
         // $('.context-menu-one').on('click', function(e){
         //     console.log('clicked', this, e);
-        // })   
+        // })  
+        var side_main_menu = `<div>
+                <a href="#" id="file"><i id="file" class="far fa-file"></i></a>
+                <a href="#" id="user-card"><i class="far fa-id-card"></i></a>
+                <a href="{{ route('logout') }}" 
+                    onclick="event.preventDefault();document.getElementById('logout-form').submit();" 
+                    id="logout"><i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>`;
 
+        $(".menu-btn-btn").popup({
+            content: side_main_menu,
+            position: "bottom",  
+            theme: "",
+            style: "",  
+            animation: "grow",  
+            event: "click", 
+            hideOnClick: true,  
+            zIndex: 1000,  
+            popItemClick: function(e){
+                let menu_type = $(this).attr("id");
+                console.log("menu", menu_type);
+            }
+        });
 
 
         
@@ -345,12 +368,13 @@
                 if(menu_type == "media"){
                     const file = Swal.fire({
                         title: 'Select image',
-                        html: '<div class="upload-img-preview" style="width:400px;height:200px;"></div>',
+                        showCancelButton: true,
                         input: 'file',
                         inputAttributes: {
                             'accept': 'image/*',
                             'aria-label': 'Upload your profile picture'
                         },
+                        html: '<div class="upload-img-preview" ></div>',
                         inputValidator: (result) => {
                             console.log(result)
                         }
@@ -437,11 +461,14 @@
         return html;
     }
 
-    function onImageClick(obj, serialize_id, mimetype){
-        let sessionImg =  getMsgImageBlob(serialize_id);
+    function onImageClick(obj, serialize_id, mimetype, type){
+        let sessionImg = "";
+        if(type != "video" && type != "audio" && type != "ptt"){
+            sessionImg = getMsgImageBlob(serialize_id);
+        }
         let img_elem_id =  serialize_id.split("@")[1].split("_")[1];
-        let prev_img = $("#prev_img_" + img_elem_id).attr("src");
-        //console.log("serialize_id:" , serialize_id);
+        let prev_img = (type != "video" && type != "audio" && type != "ptt")?$("#prev_img_" + img_elem_id).attr("src"):"" ;
+        console.log("prev_img:" , prev_img , type);
         if(sessionImg != "" && prev_img == ""){
             //$(obj).find("image-preview-loaded-img img").attr("src", sessionImg);
             $("#prev_img_" + img_elem_id).attr("src",sessionImg);
@@ -452,12 +479,12 @@
             console.log("large the image - TODO");
             return true;
         }
-        getImgAjax(obj, serialize_id, mimetype);
+        getImgAjax(obj, serialize_id, mimetype, type);
         //console.log("sessionImg:", sessionImg);
 
     }
 
-    function getImgAjax(obj, serialize_id, mimetype){
+    function getImgAjax(obj, serialize_id, mimetype, type){
 
         $.ajaxSetup({
             headers: {
@@ -474,24 +501,27 @@
             // },
             success:function(data) {
                 //$("#msg").html(data.msg);
-                //console.log(data);
+                //console.log("getImgAjax:",serialize_id, data);
                 if(data.status == "success"){
                     let imageDataURL = "data:"+mimetype+";base64,"+data.base64.replace(/"/g,"");
                     //$("#prev_img_" + serialize_id.split("@")[1].split("_")[1]).attr("src", imageDataURL);
                     // console.log( blob);
-
-                    $("#prev_img_" + serialize_id.split("@")[1].split("_")[1]).attr("src", imageDataURL);
-                        sessionStorage.setItem(serialize_id, imageDataURL)
-
-                    // fetch(imageDataURL)
-                    // .then(function(res){
-                    //     return res.blob(); 
-                    // })
-                    // .then(function(imgBlob){
-                    //     var objectURL = URL.createObjectURL(imgBlob);
-                    //     $("#prev_img_" + serialize_id.split("@")[1].split("_")[1]).attr("src", objectURL);
-                    //     sessionStorage.setItem(serialize_id, objectURL)
-                    // })
+                    if(type != "video" && type != "audio" & type != "ptt"){
+                        $("#prev_img_" + serialize_id.split("@")[1].split("_")[1]).attr("src", imageDataURL);
+                            sessionStorage.setItem(serialize_id, imageDataURL)
+                    }else{
+                        fetch(imageDataURL)
+                        .then(function(res){
+                            return res.blob(); 
+                        })
+                        .then(function(imgBlob){
+                            var objectURL = URL.createObjectURL(imgBlob);
+                            let vdeo_dom_id = serialize_id.split("@")[1].split("_")[1];
+                            $("#prev_media_" + vdeo_dom_id + " source").attr("src", objectURL);
+                            //sessionStorage.setItem(serialize_id, objectURL)
+                            $("#prev_media_" + vdeo_dom_id )[0].load();
+                        })
+                    }
                 }
                 
             }
@@ -508,7 +538,7 @@
         setSeenMsgs(userSrializeId);
         intervalId = setInterval(function(user_id, is_group){
             //console.log(user_id, is_group)
-            getMessages(user_id, is_group);
+            //getMessages(user_id, is_group);
         },1000, userSrializeId, isGroup);
 
         //$(".msg-text-content").emojioneArea()
@@ -516,7 +546,7 @@
 
     function setSeenMsgs(userSrializeId){
         let userId = userSrializeId.replace(/[@c.us,@c.us]/g, "");
-        console.log("set seen msg - TODO" , userId);
+        console.log("set seen msg 0 - TODO" , userId);
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -531,7 +561,7 @@
             },
             success:function(data) {
                 //$("#msg").html(data.msg);
-                console.log(data);
+                //console.log("setSeenMsgs: ", data);
                 if(data.response.status == "success"){
                     console.log("set zero unread count - TODO" , userId);
                     $("#unread_msg_" + userId).html(0)
@@ -552,7 +582,7 @@
             getAllChats();
 
             let is_check_users = sessionStorage.getItem("is_all_user_check");
-            console.log("is_check_users:", is_check_users)
+            //console.log("is_check_users:", is_check_users)
             if(is_check_users == "false"){
                 clearInterval(intervalusersId);
             }
@@ -575,11 +605,11 @@
             },
             success:function(data) {
                 //$("#msg").html(data.msg);
-                //console.log(data);
+                console.log(data);
                 if(data.status == "success"){
                     var new_hash = data.chats_md5; 
                     if(currnt_chat_id != userId || currnet_chat_hash != new_hash){
-                        setMsgs(data.response.msgs, isGroup, userId, new_hash);
+                        setMsgs(data.response.response, isGroup, userId, new_hash);
                     }
                 }
                 
@@ -587,6 +617,38 @@
         });
     }
 
+
+    function getMoreMsgs(){
+        //setLoadingMessages(true);
+        let userId = currnt_chat_id;
+        let isGroup = is_current_group;
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type:'POST',
+            url:'/wpp/earlierchatmsg',
+            data: {
+                user_id : userId,
+                is_group: isGroup
+            },
+            success:function(data) {
+                //$("#msg").html(data.msg);
+                console.log("getMoreMsgs: ", data);
+                // if(data.status == "success"){
+                //     var new_hash = data.chats_md5; 
+                //     if(currnt_chat_id != userId || currnet_chat_hash != new_hash){
+                //         setMsgs(data.response.response, isGroup, userId, new_hash);
+                //     }
+                // }
+                
+            }
+        });
+
+    }
 
     //user list and new msg count
     function getAllChats() {
@@ -605,8 +667,7 @@
             //     is_group: isGroup
             // },
             success:function(data) {
-                
-                //console.log(data);
+                //console.log("all chats:" , data);
                 if(data.conn_status && data.conn_status.message == "Connected"){
 
                     //console.log("new hash", data.chats_md5)
@@ -667,23 +728,28 @@
     function setMsgs(msgs, isGroup, userId, new_hash){
         var writMsgArr;
         var isAppend = false;
+        //console.log("currnt_chat_id:" , currnt_chat_id , "clicked_userId: " , userId)
         if(currnt_chat_id != userId){
             currnt_chat_id = userId;
             writMsgArr = msgs;
             $(".chat-container-region").html("");
         }
+        //console.log("currnt_chat_id:" , currnt_chat_id , "clicked_userId: " , userId)
+        //console.log("currnet_chat_hash:" , currnet_chat_hash , "new_hash: " , new_hash)
+
         if(currnet_chat_hash != new_hash){
             currnet_chat_hash = new_hash;
+            //console.log("msg_ary:" , msg_ary , "currnet_chat_hash: " , currnet_chat_hash)
             if(msg_ary.length > 0){
                 //var diff = $(msgs).not(msg_ary).get();
 
                 var diff = msgs.filter(function(objOne) {
                     return !msg_ary.some(function(objTwo) {
-                        return objOne.id.id == objTwo.id.id;
+                        return objOne.id == objTwo.id;
                     });
                 });
 
-                console.log("diff", diff)
+                //console.log("diff", diff)
 
                 if(diff != msg_ary){
                     writMsgArr = diff;
@@ -694,12 +760,12 @@
             }
         }
         msg_ary = msgs;
-        //console.log(writMsgArr);
+        //console.log("writMsgArr: ",writMsgArr);
         var i = 0, len = writMsgArr.length;
         var msg_body_html = "";
         while (i < len) {
             var msg = writMsgArr[i];
-            if(msg.type == "chat" || msg.type == "image" || msg.type == "video"){
+            if(types_arry.indexOf(msg.type) > -1){
                 //show only chat
                 var msg_html = createMsgHtml(msg, isGroup);
                 //console.log(msg_html);
@@ -716,6 +782,7 @@
             $(".chat-container-region").html(msg_body_html)
         }
         setMsgsTail();
+        //console.log("last_elem_id:" , last_elem_id)
         scrollToElem(last_elem_id);
         //$(".msg-text-content").
         // twemoji.folder = 'svg';
@@ -731,14 +798,15 @@
         var in_or_out = 'message-in';
         var tail_data = "tail-out";
         var html = "";
-        var elem_id = msg.id.id;
+        var elem_id = msg.id;
+        var img_elem_id = elem_id.split("@")[1].split("_")[1];
         //var tail_class = "chat-item-tail"
-        if(msg.id.fromMe){
+        if(msg.fromMe){
             in_or_out = 'message-out';
             tail_data = 'tail-in';
         }
         html = '<div tabindex="-1" class="chat-item focusable-list-item ' + in_or_out +  '"' + 
-            'data-id="' + msg.id.id + '" id="' + msg.id.id + '" data-serializedid="'+msg.id._serialized+'">' + 
+            'data-id="' + elem_id + '" id="' + elem_id + '" data-serializedid="'+elem_id+'">' + 
             '<span></span>' + //?
             '<div class="chat-item-content chat-item-wide chat-item-shape">'; 
             if(!msg.quotedMsg){
@@ -748,19 +816,19 @@
                         '<div class="chat-msg-content">' + 
                             '<div class="msg-sender-details msg-sender-color " role="">' +
                                 '<span dir="auto" class="msg-sender-name msg-sender-cursor text-visibility">' + 
-                                    msg.from + 
+                                    ((msg.sender)?msg.sender.formattedName:msg.from) + 
                                 '</span>' + 
                             '</div>' + 
                             '<div class="msg-text-container copyable-text" data-pre-plain-text="">';
             
-            if(msg.quotedMsg && (msg.quotedMsg.type == "chat" || msg.quotedMsg.type == "image"|| msg.quotedMsg.type == "video")){
+            if(msg.quotedMsg && types_arry.indexOf(msg.quotedMsg.type) > -1){
                 //msg.quotedParticipant
-                //msg.quotedStanzaID
+                //msg.quotedMsgId
                 //msg.quotedMsg.type
                 //msg.quotedMsg.body
                 html += '<div class="relay-container">' +
                         '<div class="relay-container-width">' + 
-                            '<div class="relay-container-btn-role" role="button" onclick="scrollToElem(\''+ msg.quotedStanzaID +'\')">' + 
+                            '<div class="relay-container-btn-role" role="button" onclick="scrollToElem(\''+ msg.quotedMsgId +'\')">' + 
                                 '<span class="relay-bg-color-1 relay-bg-flex"></span>' + 
                                 '<div class="relay-msg-wrapper">' + 
                                     '<div class="relay-chat-msg-content">' + 
@@ -793,9 +861,9 @@
                         '</div>' +
                     '</div>';
             }
-            if(msg.type == "image" ||  msg.type == "video"){
+            if(msg.type == "image" ||  msg.type == "video" || msg.type == "audio"|| msg.type == "ptt"){
                 html += '<div role="button" class="image-preview-area-btn"' + 
-                        'onclick="onImageClick(this, \'' + msg.id._serialized + '\' , \'' + msg.mimetype+ '\')" ' + 
+                        'onclick="onImageClick(this, \'' + elem_id + '\' , \'' + msg.mimetype+ '\' , \'' +msg.type+ '\')" ' + 
                         'style="width: 330px; height: 330px;">' +
                         '<div class="image-preview-area-container">' + 
                             '<div class="image-preview-wrapper">' + 
@@ -803,18 +871,28 @@
                             '</div>'+
                             '<div class="image-preview-wrapper image-preview-loaded-img">';
                             if(msg.type == "image"){
-                                html += '<img id="prev_img_' + msg.id.id +'" src="' + getMsgImageBlob(msg.id._serialized) + '" >';
+                                html += '<img id="prev_img_' + img_elem_id +'" src="' + getMsgImageBlob(elem_id) + '" >';
                             }
+
                             if(msg.type == "video"){
-                                html += '<video id="prev_img_' + msg.id.id +'" controls>' + 
-                                            '<source  src="' + getMsgImageBlob(msg.id._serialized) + '" >' + 
-                                        '</video>';
+                                let vdo_src = getMsgImageBlob(elem_id);
+                                html += '<video id="prev_media_' + img_elem_id +'" controls>' + 
+                                        '<source  src="' + vdo_src + '" >' + 
+                                    '</video>';
                             }
+
+                            if(msg.type == "audio" || msg.type == "ptt"){
+                                let vdo_src = getMsgImageBlob(elem_id);
+                                html += '<audio id="prev_media_' + img_elem_id +'" controls>' + 
+                                        '<source  src="' + vdo_src + '" >' + 
+                                    '</audio>';
+                            }
+
                         html += '</div></div></div>';
             }
             html += '<div class="msg-text-content">\n' + 
                         '<span dir="rtl" class="text-visibility selectable-text copyable-text">\n' + 
-                            '<span>' + ((msg.type == "image" ||  msg.type == "video")?msg.caption:msg.body) + '</span>\n' + 
+                            '<span>' + ((msg.type == "image" ||  msg.type == "video")?msg.caption:((msg.type =="audio" || msg.type =="ptt")?"":msg.body)) + '</span>\n' + 
                         '</span>\n' + 
                         '<span class="msg-text-foot-spacer"></span>\n' + 
                     '</div>\n' +
@@ -835,9 +913,9 @@
         //msg.body
         //msg.from
         //msg.t //> timestamp
-        //msg.id.fromMe
-        //msg.id.id
-        //msg.id._serialized
+        //msg.fromMe
+        //elem_id
+        //elem_id
         return [html,elem_id];
     }
 
@@ -849,14 +927,14 @@
     //     var in_or_out = 'message-in';
     //     var tail_data = "tail-out";
     //     var html = "";
-    //     var elem_id = msg.id.id;
+    //     var elem_id = elem_id;
     //     //var tail_class = "chat-item-tail"
-    //     if(msg.id.fromMe){
+    //     if(msg.fromMe){
     //         in_or_out = 'message-out';
     //         tail_data = 'tail-in';
     //     }
     //     html = '<div tabindex="-1" class="chat-item focusable-list-item ' + in_or_out +  '"' + 
-    //         'data-id="' + msg.id.id + '" id="' + msg.id.id + '" data-serializedid="'+msg.id._serialized+'">' + 
+    //         'data-id="' + elem_id + '" id="' + elem_id + '" data-serializedid="'+elem_id+'">' + 
     //         '<span></span>' + //?
     //         '<div class="chat-item-content chat-item-wide chat-item-shape">'; 
     //         if(msg.quotedMsg != ""){
@@ -876,7 +954,7 @@
     //         }
     //         if(msg.type == "image" ||  msg.type == "video"){
     //             html += '<div role="button" class="image-preview-area-btn"' + 
-    //                     'onclick="onImageClick(this, \'' + msg.id._serialized + '\' , \'' + msg.mimetype+ '\')" ' + 
+    //                     'onclick="onImageClick(this, \'' + elem_id + '\' , \'' + msg.mimetype+ '\')" ' + 
     //                     'style="width: 330px; height: 330px;">' +
     //                     '<div class="image-preview-area-container">' + 
     //                         '<div class="image-preview-wrapper">' + 
@@ -884,11 +962,11 @@
     //                         '</div>'+
     //                         '<div class="image-preview-wrapper image-preview-loaded-img">';
     //                         if(msg.type == "image"){
-    //                             html += '<img id="prev_img_' + msg.id.id +'" src="' + getMsgImageBlob(msg.id._serialized) + '" >';
+    //                             html += '<img id="prev_img_' + img_elem_id +'" src="' + getMsgImageBlob(elem_id) + '" >';
     //                         }
     //                         if(msg.type == "video"){
-    //                             html += '<video id="prev_img_' + msg.id.id +'" controls>' + 
-    //                                         '<source  src="' + getMsgImageBlob(msg.id._serialized) + '" >' + 
+    //                             html += '<video id="prev_media_' + img_elem_id +'" controls>' + 
+    //                                         '<source  src="' + getMsgImageBlob(elem_id) + '" >' + 
     //                                     '</video>';
     //                         }
     //                     html += '</div></div></div>';
@@ -916,9 +994,9 @@
     //     //msg.body
     //     //msg.from
     //     //msg.t //> timestamp
-    //     //msg.id.fromMe
-    //     //msg.id.id
-    //     //msg.id._serialized
+    //     //msg.fromMe
+    //     //elem_id
+    //     //elem_id
     //     return [html,elem_id];
     // }
 
@@ -936,7 +1014,7 @@
 
     function getMsgImageBlob(msg_serialized_id){
         let imagBase64 = sessionStorage.getItem(msg_serialized_id);
-        //console.log("imagBase64: " , imagBase64)
+        //console.log("msg_serialized_id:",msg_serialized_id,"imagBase64: " , imagBase64)
         if(imagBase64 !== null){
             return imagBase64;
             // $.get(imagBase64).done(function () {
@@ -981,6 +1059,8 @@
             var element = document.getElementById(elem_id);
             if(element  !== null )
                 element.scrollIntoView(defaultOptions); //, block: "end", inline: "nearest"
+            else
+                console.log(`elemnet with id ${elem_id}: no found`)
         }
 
     }

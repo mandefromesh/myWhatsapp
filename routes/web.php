@@ -30,6 +30,7 @@ Route::post('wpp/getqrcode', [App\Http\Controllers\WppconnectController::class, 
 Route::get('wpp/chat', [App\Http\Controllers\WppconnectController::class, 'chat'])->name('wpp.chat');
 Route::post('wpp/chatajax', [App\Http\Controllers\WppconnectController::class, 'getAllChatsAjax'])->name('wpp.chatajax');
 Route::post('wpp/chatmsg', [App\Http\Controllers\WppconnectController::class, 'getAllMessagesInChat'])->name('wpp.chatmsg');
+Route::post('wpp/earlierchatmsg', [App\Http\Controllers\WppconnectController::class, 'getEarlierMessages'])->name('wpp.earlierchatmsg');
 Route::post('wpp/sendmsg', [App\Http\Controllers\WppconnectController::class, 'sendCahtMessage'])->name('wpp.sendmsg');
 Route::get('wpp/msg/{id}', [App\Http\Controllers\WppconnectController::class, 'getMessageById'])->name('wpp.msg');
 
