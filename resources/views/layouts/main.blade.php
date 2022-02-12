@@ -22,6 +22,8 @@
     <link href="{{ url('css/main.css') }}" rel="stylesheet">
     <link href="{{ url('jQuery-contextMenu/jquery.contextMenu.min.css') }}" rel="stylesheet">
     <link href="{{ url('popup-menu/popup.css') }}" rel="stylesheet">
+
+    <link href="{{ url('Magnific-Popup-1.1.0/magnific-popup.css') }}" rel="stylesheet">
     <!-- <link href="{{ url('emojionearea/emojionearea.min.css') }}" rel="stylesheet"> -->
     <!-- <link href="https://rawgit.com/ellekasai/twemoji-awesome/gh-pages/twemoji-awesome.css" rel="stylesheet"> -->
 
@@ -38,7 +40,8 @@
     <!-- <script src="{{ url('emoji_picker/vanillaEmojiPicker.js') }}"></script> -->
     <!-- <script src="{{ url('wasap_emoji/wasap_emoji.js') }}"></script> -->
     <script src="{{ url('sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
-    
+    <script src="{{ url('Magnific-Popup-1.1.0/jquery.magnific-popup.min.js') }}"></script>
+
     <link href="{{ url('emoji-mart-outside-react/emoji-mart/css/emoji-mart.css') }}" rel="stylesheet">
     <script src="{{ url('emoji-mart-outside-react/dist/main.js') }}" type="text/javascript"></script>
 
@@ -59,6 +62,7 @@
                     <div id="side" class="side-container">
                         <header class="side-head-wrapper">
                             <!-- user(my) avatar area -->
+
                             <div class="side-head-avater-area">
                                 <div class="avater-img-container" style="height: 40px; width: 40px; cursor: pointer;">
                                     <div class="default-avater-img-container">
@@ -73,6 +77,7 @@
                                             </svg>
                                         </span>
                                     </div>
+                                    @yield('my_profile_img')
                                     <!-- <img src="https://web.whatsapp.com/pp?e=https%3A%2F%2Fpps.whatsapp.net%2Fv%2Ft61.24694-24%2F158668199_505194764150172_6062118462735220070_n.jpg%3Fccb%3D11-4%26oh%3D185b38bda79bad5767e043cd43af17ca%26oe%3D61DDC2FB&amp;t=s&amp;u=972509399533%40c.us&amp;i=1641600704&amp;n=r9mSIfu5BCeBBZplXN4s2hWcdiQqor2xVHXFCGjEepI%3D"
                                         alt="" draggable="false" class="user-real-img user-real-img-opcty-1 vsblty-vsbl" style="visibility: visible;"> -->
                                 </div>

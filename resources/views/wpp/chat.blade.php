@@ -1,5 +1,12 @@
 @extends('layouts.main')
 
+@section('my_profile_img')
+    @if($myProfileImg != "")
+        <img src="{{ $myProfileImg }}"
+            id = "my_profile_image"
+            alt="" draggable="false" class="user-real-img user-real-img-opcty-1 vsblty-vsbl" style="visibility: visible;">
+    @endif
+@endsection
 
 @section('users_list')
 <div aria-label="Chat list"  class="users-group-list-container users-group-list-container-mrg" role="grid"
@@ -468,7 +475,7 @@
         }
         let img_elem_id =  serialize_id.split("@")[1].split("_")[1];
         let prev_img = (type != "video" && type != "audio" && type != "ptt")?$("#prev_img_" + img_elem_id).attr("src"):"" ;
-        console.log("prev_img:" , prev_img , type);
+        //console.log("prev_img:" , prev_img , type);
         if(sessionImg != "" && prev_img == ""){
             //$(obj).find("image-preview-loaded-img img").attr("src", sessionImg);
             $("#prev_img_" + img_elem_id).attr("src",sessionImg);
@@ -476,7 +483,15 @@
         }
         if(prev_img != ""){
             //larg the image - TODO
-            console.log("large the image - TODO");
+            //console.log("large the image - TODO");
+
+            $.magnificPopup.open({
+                items: {
+                    src: prev_img
+                },
+                type: 'image'
+            });
+
             return true;
         }
         getImgAjax(obj, serialize_id, mimetype, type);

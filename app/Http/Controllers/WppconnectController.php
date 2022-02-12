@@ -162,11 +162,36 @@ class WppconnectController extends Controller
         if($all_chats != "" && $all_chats['status'] == 'success'){
             $chatsArr = $all_chats['response'];
         }
+        
+        $all_contacts = $this->getAllContacts();
+        $contantsArr = [];
+        $myContant = "";
+        $myProfileImg = "";
+        if($all_contacts != "" && $all_contacts['status'] == 'success'){
+            foreach ($all_contacts["response"] as $contact) {
+                if (!$contact["isMe"] && $contact["isMyContact"] && $contact["id"]["user"] != null )
+                    $contantsArr[] = $contact;
+                elseif($contact["isMe"])
+                    $myContant = $contact;
+            }
+        }
+        if($myContant != ""){
+            //$myContantData = $this->getContact($myContant["id"]["user"]);
+            $profileImg = $this->getProfileImg($myContant["id"]["user"]);
+            if($profileImg != "" && $profileImg['status'] == 'success'){
+                $myProfileImg = $profileImg["response"]["eurl"];
+            }
+            //dd($myProfileImg);
+        }
+
+
+
         $chats_md5 = md5(json_encode($all_chats));
         $data = array(
             'title' => 'All Chats',
             'allChats' => $chatsArr,
-            'chats_md5' => $chats_md5
+            'chats_md5' => $chats_md5,
+            'myProfileImg' =>$myProfileImg
         );
         //get all sers/group list - TODO;;
         return view('wpp.chat')->with($data);
@@ -193,6 +218,74 @@ class WppconnectController extends Controller
         
         return $response;
     }
+
+    /**
+     * Show the qr code for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getAllContacts()
+    {
+        $response = "";
+        $url = $this->url;
+        $session = session('session');
+        $token = session('token');
+        if($token && $session && session('init')){
+            Wppconnect::make($url);
+            $response = Wppconnect::to('/api/'.$session.'/all-contacts')->withHeaders([
+                'Authorization' => 'Bearer '.$token
+            ])->asJson()->get();
+            $response = json_decode($response->getBody()->getContents(),true);
+        }
+        
+        return $response;
+    }
+
+    /**
+     * Show the qr code for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getContact($phone_num)
+    {
+        $response = "";
+        $url = $this->url;
+        $session = session('session');
+        $token = session('token');
+        if($token && $session && session('init')){
+            Wppconnect::make($url);
+            $response = Wppconnect::to('/api/'.$session.'/contact/'.$phone_num)->withHeaders([
+                'Authorization' => 'Bearer '.$token
+            ])->asJson()->get();
+            $response = json_decode($response->getBody()->getContents(),true);
+        }
+        
+        return $response;
+    }
+
+    /**
+     * Show the qr code for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getProfileImg($phone_num)
+    {
+        $response = "";
+        $url = $this->url;
+        $session = session('session');
+        $token = session('token');
+        if($token && $session && session('init')){
+            Wppconnect::make($url);
+            $response = Wppconnect::to('/api/'.$session.'/profile-pic/'.$phone_num)->withHeaders([
+                'Authorization' => 'Bearer '.$token
+            ])->asJson()->get();
+            $response = json_decode($response->getBody()->getContents(),true);
+        }
+        
+        return $response;
+    }
+
+
     /**
      * Show the qr code for creating a new resource.
      *
@@ -447,43 +540,24 @@ class WppconnectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getAllContacts()
+    public function getAllContactsAjax()
     {
-        $response = "";
-        $url = $this->url;
-        $session = session('session');
-        $token = session('token');
-        if($token && $session && session('init')){
-            Wppconnect::make($url);
-            $response = Wppconnect::to('/api/'.$session.'/all-contacts')->withHeaders([
-                'Authorization' => 'Bearer '.$token
-            ])->asJson()->get();
-            $response = json_decode($response->getBody()->getContents(),true);
+        $all_contacts = "";
+        $conn_status = "";
+        if(session('token') && session('session') && session('init')){
+            $all_contacts = $this->getAllContacts();
+            $conn_status = $this->checkWppSessionStatus($this->url, session('session') , session('token'));
         }
         
-        return $response;
+        $chats_md5 = md5(json_encode($all_contacts));
+
+        return response()->json(array(
+            'all_contacts'=> $all_contacts,
+            'conn_status' => $conn_status,
+            'chats_md5' => $chats_md5
+        ), 200);
     }
-    /**
-     * Show the qr code for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function getContact($contactNum)
-    {
-        $response = "";
-        $url = $this->url;
-        $session = session('session');
-        $token = session('token');
-        if($token && $session && session('init')){
-            Wppconnect::make($url);
-            $response = Wppconnect::to('/api/'.$session.'/contact/'.$contactNum)->withHeaders([
-                'Authorization' => 'Bearer '.$token
-            ])->asJson()->get();
-            $response = json_decode($response->getBody()->getContents(),true);
-        }
-        
-        return $response;
-    }
+    
     /**
      * Show the form for creating a new resource.
      *
