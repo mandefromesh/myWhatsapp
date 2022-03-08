@@ -36,4 +36,5 @@ Route::get('wpp/msg/{id}', [App\Http\Controllers\WppconnectController::class, 'g
 
 Route::post('wpp/setseen', [App\Http\Controllers\WppconnectController::class, 'setSeenMessage'])->name('wpp.setseen');
 
-//Route::get('wpp/contact', [App\Http\Controllers\WppconnectController::class, 'contact'])->name('wpp.contact');
+Route::get('wpp/contact', [App\Http\Controllers\WppconnectController::class, 'getAllContactsAjax'])->name('wpp.contact');
+Route::get('wpp/contactpic/{userid}', [App\Http\Controllers\WppconnectController::class, 'getProfileImgAjax'])->name('wpp.contactpic');

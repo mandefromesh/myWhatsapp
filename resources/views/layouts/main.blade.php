@@ -100,7 +100,7 @@
                                         <!-- chat button -->
                                         <div class="menu-btn-container">
                                             <div aria-disabled="false" role="button" tabindex="0" class="btns-content"
-                                                title="New chat" aria-label="New chat">
+                                                title="New chat" id="new-chat-btn">
                                                 <span data-testid="chat" data-icon="chat" class="">
                                                     <svg viewBox="0 0 24 24" width="24" height="24" class="">
                                                         <path fill="currentColor"

@@ -285,6 +285,27 @@ class WppconnectController extends Controller
         return $response;
     }
 
+    /**
+     * Show the qr code for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getProfileImgAjax($userid)
+    {
+        $response = "";
+        $phone_num = $userid; //$request->input('user_id');
+        if(session('token') && session('session') && session('init') && $phone_num != ""){
+            $response = $this->getProfileImg($phone_num);
+        }
+        
+        $chats_md5 = md5(json_encode($response));
+
+        return response()->json(array(
+            'response'=> $response,
+            'chats_md5' => $chats_md5
+        ), 200);
+    }
+
 
     /**
      * Show the qr code for creating a new resource.
@@ -553,7 +574,7 @@ class WppconnectController extends Controller
 
         return response()->json(array(
             'all_contacts'=> $all_contacts,
-            'conn_status' => $conn_status,
+            'status' => $conn_status,
             'chats_md5' => $chats_md5
         ), 200);
     }

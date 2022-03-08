@@ -125,6 +125,7 @@
     var msg_ary = [];
     var intervalId;
     var last_elem_id = "";
+    var users_contants;
     // twemoji.size = "svg";
     // twemoji.ext = ".svg";
     // new EmojiPicker({
@@ -214,27 +215,24 @@
             var keycode = (event.keyCode ? event.keyCode : event.which);
             //var dummy = "\xAD";
 
-            if (keycode == 13) {
-                if (event.altKey) {
-        
-                    // var el = document.getElementById("main_msg_textbox")
-                    // var range = document.createRange()
-                    // var sel = window.getSelection()
+            if (keycode == 13 && event.altKey) {
+                // var el = document.getElementById("main_msg_textbox")
+                // var range = document.createRange()
+                // var sel = window.getSelection()
 
-                    // var val = $(this).text();
-                    // $(this).text(val + "\r\n" + dummy);
-                    // var pos = $(this).text().lastIndexOf(dummy);
-                    
-                    // range.setStart(el.childNodes[0], pos)
-                    // range.collapse(true)
-                    
-                    // sel.removeAllRanges()
-                    // sel.addRange(range)
-                    sendTextMsg();
+                // var val = $(this).text();
+                // $(this).text(val + "\r\n" + dummy);
+                // var pos = $(this).text().lastIndexOf(dummy);
+                
+                // range.setStart(el.childNodes[0], pos)
+                // range.collapse(true)
+                
+                // sel.removeAllRanges()
+                // sel.addRange(range)
+                sendTextMsg();
 
-                    console.log("enter + alt - send msg")
-                    return true;
-                }
+                console.log("enter + alt - send msg")
+                return true;
                 //console.log("only enter")
                 //return false;
             }
@@ -420,8 +418,260 @@
 
         // $(".msg-text-write-area .textbox-input");
 
-    });
+        $("#new-chat-btn").on("click", function(){
+            console.log("new chat");
+            usersContant();
 
+        });
+    })
+
+    function usersContant(){
+        var title = "צ'אט חדש";
+        //var title = "העברת הודעה אל";
+        if(users_contants === undefined){
+            getUsersContants("usersContant()");
+            return false;
+        }
+        //console.log("users_contants", users_contants)
+        var conent_html = `
+            <div class="chat-modal-wrapper  copyable-area" data-testid="chat-modal">
+                <header class="chat-modal-header">
+                    <!--
+                    <div class="chat-modal-close">
+                        <button class="chat-modal-close-btn" aria-label="סגירה">
+                            <span data-testid="x" data-icon="x">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path fill="currentColor"
+                                        d="m19.1 17.2-5.3-5.3 5.3-5.3-1.8-1.8-5.3 5.4-5.3-5.3-1.8 1.7 5.3 5.3-5.3 5.3L6.7 19l5.3-5.3 5.3 5.3 1.8-1.8z">
+                                    </path>
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
+                    -->
+                    <div class="chat-modal-header-title">
+                        <h1 style="font-size: inherit;">${title}</h1>
+                    </div>
+                </header>
+                <!-- search area -->
+                <div class="chat-modal-search" tabindex="-1">
+                    <button class="chat-modal-search-btn" aria-label="חיפוש צ'אט או התחלת צ'אט חדש">
+                        <div class="chat-modal-search-btn-icons chat-modal-search-btn-icon-back">
+                            <span data-testid="back" data-icon="back">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path fill="currentColor" d="m12 4 1.4 1.4L7.8 11H20v2H7.8l5.6 5.6L12 20l-8-8 8-8z">
+                                    </path>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="chat-modal-search-btn-icons chat-modal-search-btn-icon-search">
+                            <span data-testid="search" data-icon="search">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path fill="currentColor"
+                                        d="M15.009 13.805h-.636l-.22-.219a5.184 5.184 0 0 0 1.256-3.386 5.207 5.207 0 1 0-5.207 5.208 5.183 5.183 0 0 0 3.385-1.255l.221.22v.635l4.004 3.999 1.194-1.195-3.997-4.007zm-4.808 0a3.605 3.605 0 1 1 0-7.21 3.605 3.605 0 0 1 0 7.21z">
+                                    </path>
+                                </svg>
+                            </span>
+                        </div>
+                    </button>
+                    <span></span>
+                    <div class="search-input-placeholder">חיפוש...</div>
+                    <label class="search-input-label">
+                        <div tabindex="-1" class="search-input-wrapper search-input-space">
+                            <div title="תיבת טקסט להזנת החיפוש" role="textbox"
+                                class="search-textbox-input copyable-text selectable-text" contenteditable="true"
+                                data-tab="3" dir="rtl">
+                            </div>
+                        </div>
+                    </label>
+                </div>`;
+        conent_html += createContentHtml(users_contants);
+        conent_html += `
+            <!-- footer -->
+                <!--
+                <span class="send-to-footer">
+                    <div class="send-to-wrapper" style="transform: translateY(0%);">
+                        <span class="send-to-names-list">
+                            <span dir="auto" class="send-to-name-txt">Yes-watsapp</span>
+                        </span>
+                        <div data-animate-btn="true" class="send-to-btn-con" style="opacity: 1; transform: scale(1);">
+                            <div role="button" tabindex="0" class="send-to-btn">
+                                <span data-testid="send" data-icon="send" class="send-to-btn-icon">
+                                    <svg viewBox="0 0 24 24" width="24" height="24">
+                                        <path fill="currentColor"
+                                            d="M1.101 21.757 23.8 12.028 1.101 2.3l.011 7.912 13.623 1.816-13.623 1.817-.011 7.912z">
+                                        </path>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </span>
+                -->
+            </div>
+        `;
+        Swal.fire({
+            title: title,
+            html: conent_html,
+            heightAuto: false,
+            showConfirmButton: false,
+            showCloseButton: true,
+            customClass: {
+                popup: 'contact-list-swel'
+            }
+
+        });
+    }
+    function createContentHtml(users_contants, showCheckBox){
+        if(users_contants === undefined){
+            return "";
+        }
+        if(showCheckBox === undefined){
+            showCheckBox = false;
+        }
+        var html = `
+            <div class="contact-list-wrapper" tabindex="0">
+            <div style="pointer-events: auto;">
+            <div class="contact-list-container">
+        `;
+        $.each(users_contants, function(idx,contact){
+            var user_img_url = ((contact.profilePic != "")?contact.profilePic:sessionStorage.getItem("userpic_" + contact.user_id))
+            html += `
+                <div class="contact-item-wrapper">
+                    <button class="contact-item-wrapper-btn" type="button">`;
+                if(showCheckBox){
+                    html += `<div class="contact-item-checkbox-wrapper">
+                            <input class="contact-item-checkbox" type="checkbox" tabindex="-1">
+                            <div class="contact-item-visual-checkbox" tabindex="-1" aria-hidden="true"
+                                data-testid="visual-checkbox">
+                                <!-- unchecked -->
+                                <div class="contact-item-visual-checkbox-0 contact-item-visual-checkbox-0-unchecked ">
+                                    <div class="contact-item-visual-checkbox-v contact-item-visual-checkbox-v-unchecked">
+                                    </div>
+                                </div> 
+                                
+                                <!-- checked -->
+                                <!-- 
+                                <div class="contact-item-visual-checkbox-0 contact-item-visual-checkbox-0-checked">
+                                    <div
+                                        class="contact-item-visual-checkbox-v contact-item-visual-checkbox-v-checked">
+                                    </div>
+                                </div>
+                                -->
+                            </div>
+                        </div>`;
+                }
+                        html += `<div tabindex="-1" aria-selected="true" role="row">
+                            <div data-testid="cell-frame-container" class="contact-tem-container">
+
+                                <div class="contact-avatar-area">
+                                    <div class="contact-avatar-wrapper" style="height: 49px; width: 49px;">
+                                        <div class="contact-default-user-avatar">
+                                            <span data-testid="default-user" data-icon="default-user">
+                                                <svg viewBox="0 0 212 212" width="212" height="212">
+                                                    <path fill="#DFE5E7" class="background"
+                                                        d="M106.251.5C164.653.5 212 47.846 212 106.25S164.653 212 106.25 212C47.846 212 .5 164.654.5 106.25S47.846.5 106.251.5z">
+                                                    </path>
+                                                    <g fill="#FFF">
+                                                        <path class="primary"
+                                                            d="M173.561 171.615a62.767 62.767 0 0 0-2.065-2.955 67.7 67.7 0 0 0-2.608-3.299 70.112 70.112 0 0 0-3.184-3.527 71.097 71.097 0 0 0-5.924-5.47 72.458 72.458 0 0 0-10.204-7.026 75.2 75.2 0 0 0-5.98-3.055c-.062-.028-.118-.059-.18-.087-9.792-4.44-22.106-7.529-37.416-7.529s-27.624 3.089-37.416 7.529c-.338.153-.653.318-.985.474a75.37 75.37 0 0 0-6.229 3.298 72.589 72.589 0 0 0-9.15 6.395 71.243 71.243 0 0 0-5.924 5.47 70.064 70.064 0 0 0-3.184 3.527 67.142 67.142 0 0 0-2.609 3.299 63.292 63.292 0 0 0-2.065 2.955 56.33 56.33 0 0 0-1.447 2.324c-.033.056-.073.119-.104.174a47.92 47.92 0 0 0-1.07 1.926c-.559 1.068-.818 1.678-.818 1.678v.398c18.285 17.927 43.322 28.985 70.945 28.985 27.678 0 52.761-11.103 71.055-29.095v-.289s-.619-1.45-1.992-3.778a58.346 58.346 0 0 0-1.446-2.322zM106.002 125.5c2.645 0 5.212-.253 7.68-.737a38.272 38.272 0 0 0 3.624-.896 37.124 37.124 0 0 0 5.12-1.958 36.307 36.307 0 0 0 6.15-3.67 35.923 35.923 0 0 0 9.489-10.48 36.558 36.558 0 0 0 2.422-4.84 37.051 37.051 0 0 0 1.716-5.25c.299-1.208.542-2.443.725-3.701.275-1.887.417-3.827.417-5.811s-.142-3.925-.417-5.811a38.734 38.734 0 0 0-1.215-5.494 36.68 36.68 0 0 0-3.648-8.298 35.923 35.923 0 0 0-9.489-10.48 36.347 36.347 0 0 0-6.15-3.67 37.124 37.124 0 0 0-5.12-1.958 37.67 37.67 0 0 0-3.624-.896 39.875 39.875 0 0 0-7.68-.737c-21.162 0-37.345 16.183-37.345 37.345 0 21.159 16.183 37.342 37.345 37.342z">
+                                                        </path>
+                                                    </g>
+                                                </svg>
+                                            </span>
+                                        </div>`;
+                        if(user_img_url !== "" && user_img_url !== null && user_img_url !== undefined){
+                                        html +=  `<img src="${user_img_url}"
+                                            alt="" draggable="false" class="contact-user-img">
+                                        `;
+                        }
+                        html += `</div>
+                                </div>
+
+                                <div class="contact-user-name-area">
+                                    <div role="gridcell" aria-colindex="2" class="contact-user-name-wrap">
+                                        <div class="contact-user-name-container">
+                                            <span dir="auto" title="Yes-watsapp"
+                                                class="contact-user-name-txt">${contact.name}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            `; 
+        });
+        html += `
+                        </div>
+                    </div>
+                </div>`;
+        return html;
+    }
+    function getUsersContants(ret_func){
+        //console.log("getUsersContants")
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type:'GET',
+            url:'/wpp/contact',
+            success:function(data) {
+                //console.log("getUsersContants: ", data)
+                if(data.all_contacts && data.all_contacts.status == "success"){
+                    var all_contacts = data.all_contacts.response
+                    //console.log("getUsersContants: ", all_contacts);
+                    if(all_contacts.length > 0){
+                        var tmp_ary = [];
+                        $.each(all_contacts, function(idx,contact){
+                            if(contact.isMe == false){
+                                var contantObj = {
+                                    name : contact.formattedName,
+                                    user_id : contact.id.user,
+                                    user_serialized : contact.id._serialized,
+                                    isUser : contact.isUser,
+                                    profilePic: (contact.profilePicThumbObj.eurl)?contact.profilePicThumbObj.eurl:""
+                                }
+                                getUserProfilePic(contact.id.user);
+                                tmp_ary.push(contantObj)
+                            }
+                        });
+                        users_contants = tmp_ary;
+                        eval(ret_func)
+                        //console.log("getUsersContants: ", tmp_ary);
+                    }
+                }
+            }
+        });
+    }
+
+    function getUserProfilePic(user_id){
+        //return "";
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type:'GET',
+            url:'/wpp/contactpic/' + user_id,
+            success:function(data) {
+                if(data.response && data.response.status == "success"){
+                    //console.log("getUserProfilePic: ", data.response.response.eurl)
+                    if(data.response.response.eurl){
+                        sessionStorage.setItem("userpic_" + user_id , data.response.response.eurl);
+                        //return data.response.response.eurl
+                    }
+                }
+            }
+        });
+        return "";
+    }
 
     function getReplayMsgContent(chatItem){
         let sender_name = chatItem.find(".chat-msg-content .msg-sender-name").html();
@@ -517,7 +767,7 @@
             success:function(data) {
                 //$("#msg").html(data.msg);
                 //console.log("getImgAjax:",serialize_id, data);
-                if(data.status == "success"){
+                if(data.status && data.status == "success"){
                     let imageDataURL = "data:"+mimetype+";base64,"+data.base64.replace(/"/g,"");
                     //$("#prev_img_" + serialize_id.split("@")[1].split("_")[1]).attr("src", imageDataURL);
                     // console.log( blob);
@@ -621,6 +871,7 @@
             success:function(data) {
                 //$("#msg").html(data.msg);
                 console.log(data);
+                getMoreMsgs(userId,isGroup);
                 if(data.status == "success"){
                     var new_hash = data.chats_md5; 
                     if(currnt_chat_id != userId || currnet_chat_hash != new_hash){
@@ -633,10 +884,11 @@
     }
 
 
-    function getMoreMsgs(){
+    function getMoreMsgs(userId,isGroup){
         //setLoadingMessages(true);
-        let userId = currnt_chat_id;
-        let isGroup = is_current_group;
+        // let userId = currnt_chat_id;
+        // let isGroup = is_current_group;
+        console.log("getMoreMsgs: userId", userId , ",isGroup:" , isGroup);
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -799,14 +1051,11 @@
         setMsgsTail();
         //console.log("last_elem_id:" , last_elem_id)
         scrollToElem(last_elem_id);
-        //$(".msg-text-content").
-        // twemoji.folder = 'svg';
-        // twemoji.ext = '.svg';
-        // twemoji.size = '36x36';
-        $(".msg-text-content").each(function(){
-            $(this).html(twemoji.parse($(this).html()))
-        });
-        $(".chat-container-region .emoji").width("7%")
+
+        // $(".msg-text-content").each(function(){
+        //     $(this).html(twemoji.parse($(this).html()))
+        // });
+        // $(".chat-container-region .emoji").width("7%")
     }
 
     function createMsgHtml(msg, isGroup){
@@ -906,7 +1155,7 @@
                         html += '</div></div></div>';
             }
             html += '<div class="msg-text-content">\n' + 
-                        '<span dir="rtl" class="text-visibility selectable-text copyable-text">\n' + 
+                        '<span dir="auto" class="text-visibility selectable-text copyable-text">\n' + 
                             '<span>' + ((msg.type == "image" ||  msg.type == "video")?msg.caption:((msg.type =="audio" || msg.type =="ptt")?"":msg.body)) + '</span>\n' + 
                         '</span>\n' + 
                         '<span class="msg-text-foot-spacer"></span>\n' + 
