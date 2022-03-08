@@ -446,6 +446,7 @@
             <div hidden="" style="display: none;"></div>
         </div>
         <div hidden="" style="display: none;"></div>
+        <div class="loadin-spinng"></div>
     @yield('foot_script')
 </body>
 </html>

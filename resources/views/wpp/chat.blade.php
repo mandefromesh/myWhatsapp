@@ -110,6 +110,27 @@
 @endsection
 
 
+@section('head_style')
+<style>
+    .loadin-spinng{
+        display: none;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 999;
+        background: rgba(255,255,255,0.8) url("/images/loader.gif") center no-repeat;
+    }
+    body.loading{
+        overflow: hidden;   
+    }
+    /* Make spinner image visible when body element has the loading class */
+    body.loading .loadin-spinng{
+        display: block;
+    }
+</style>
+@endsection
 
 @section('foot_script')
 
@@ -126,6 +147,7 @@
     var intervalId;
     var last_elem_id = "";
     var users_contants;
+    sessionStorage.setItem("users_contants_html", "");
     // twemoji.size = "svg";
     // twemoji.ext = ".svg";
     // new EmojiPicker({
@@ -287,6 +309,9 @@
                     //let chat_msg_content = $("#" + chat_msg_id).html();
 
                     $(".replay_msg_preview_area").show();
+                }else if(key == "forword"){
+                    console.log("forword msg");
+                    usersContant("forword-msg");
                 }
             },
             items: {
@@ -420,96 +445,42 @@
 
         $("#new-chat-btn").on("click", function(){
             console.log("new chat");
-            usersContant();
+            usersContant("new-chat");
 
         });
+
     })
 
-    function usersContant(){
-        var title = "צ'אט חדש";
-        //var title = "העברת הודעה אל";
-        if(users_contants === undefined){
-            getUsersContants("usersContant()");
+    function usersContant(type){
+        $("body").addClass("loading"); 
+        if(type === undefined){
+            console.log("usersContant type undefined");
+            $("body").removeClass("loading"); 
             return false;
         }
+        var title , isCheckbox = false;
+        if(type == "new-chat"){
+            title = "צ'אט חדש";
+        }else if(type == "forword-msg"){
+            title = "העברת הודעה אל"
+            isCheckbox = true; 
+        }else{
+            console.log("usersContant type unknown");
+            $("body").removeClass("loading"); 
+            return false;
+        }
+        //var;
+        //console.time("usersContant");
+        if(users_contants === undefined){
+            getUsersContants("usersContant('" + type + "')");
+            return false;
+        }
+     
         //console.log("users_contants", users_contants)
-        var conent_html = `
-            <div class="chat-modal-wrapper  copyable-area" data-testid="chat-modal">
-                <header class="chat-modal-header">
-                    <!--
-                    <div class="chat-modal-close">
-                        <button class="chat-modal-close-btn" aria-label="סגירה">
-                            <span data-testid="x" data-icon="x">
-                                <svg viewBox="0 0 24 24" width="24" height="24">
-                                    <path fill="currentColor"
-                                        d="m19.1 17.2-5.3-5.3 5.3-5.3-1.8-1.8-5.3 5.4-5.3-5.3-1.8 1.7 5.3 5.3-5.3 5.3L6.7 19l5.3-5.3 5.3 5.3 1.8-1.8z">
-                                    </path>
-                                </svg>
-                            </span>
-                        </button>
-                    </div>
-                    -->
-                    <div class="chat-modal-header-title">
-                        <h1 style="font-size: inherit;">${title}</h1>
-                    </div>
-                </header>
-                <!-- search area -->
-                <div class="chat-modal-search" tabindex="-1">
-                    <button class="chat-modal-search-btn" aria-label="חיפוש צ'אט או התחלת צ'אט חדש">
-                        <div class="chat-modal-search-btn-icons chat-modal-search-btn-icon-back">
-                            <span data-testid="back" data-icon="back">
-                                <svg viewBox="0 0 24 24" width="24" height="24">
-                                    <path fill="currentColor" d="m12 4 1.4 1.4L7.8 11H20v2H7.8l5.6 5.6L12 20l-8-8 8-8z">
-                                    </path>
-                                </svg>
-                            </span>
-                        </div>
-                        <div class="chat-modal-search-btn-icons chat-modal-search-btn-icon-search">
-                            <span data-testid="search" data-icon="search">
-                                <svg viewBox="0 0 24 24" width="24" height="24">
-                                    <path fill="currentColor"
-                                        d="M15.009 13.805h-.636l-.22-.219a5.184 5.184 0 0 0 1.256-3.386 5.207 5.207 0 1 0-5.207 5.208 5.183 5.183 0 0 0 3.385-1.255l.221.22v.635l4.004 3.999 1.194-1.195-3.997-4.007zm-4.808 0a3.605 3.605 0 1 1 0-7.21 3.605 3.605 0 0 1 0 7.21z">
-                                    </path>
-                                </svg>
-                            </span>
-                        </div>
-                    </button>
-                    <span></span>
-                    <div class="search-input-placeholder">חיפוש...</div>
-                    <label class="search-input-label">
-                        <div tabindex="-1" class="search-input-wrapper search-input-space">
-                            <div title="תיבת טקסט להזנת החיפוש" role="textbox"
-                                class="search-textbox-input copyable-text selectable-text" contenteditable="true"
-                                data-tab="3" dir="rtl">
-                            </div>
-                        </div>
-                    </label>
-                </div>`;
-        conent_html += createContentHtml(users_contants);
-        conent_html += `
-            <!-- footer -->
-                <!--
-                <span class="send-to-footer">
-                    <div class="send-to-wrapper" style="transform: translateY(0%);">
-                        <span class="send-to-names-list">
-                            <span dir="auto" class="send-to-name-txt">Yes-watsapp</span>
-                        </span>
-                        <div data-animate-btn="true" class="send-to-btn-con" style="opacity: 1; transform: scale(1);">
-                            <div role="button" tabindex="0" class="send-to-btn">
-                                <span data-testid="send" data-icon="send" class="send-to-btn-icon">
-                                    <svg viewBox="0 0 24 24" width="24" height="24">
-                                        <path fill="currentColor"
-                                            d="M1.101 21.757 23.8 12.028 1.101 2.3l.011 7.912 13.623 1.816-13.623 1.817-.011 7.912z">
-                                        </path>
-                                    </svg>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </span>
-                -->
-            </div>
-        `;
+        var conent_html = getConentHtml(users_contants, title, true ,isCheckbox);
+        
+        
+
         Swal.fire({
             title: title,
             html: conent_html,
@@ -518,6 +489,17 @@
             showCloseButton: true,
             customClass: {
                 popup: 'contact-list-swel'
+            },
+            // willOpen: () => {
+            //     Swal.showLoading()
+            // },
+            didRender: () => {
+                $("body").removeClass("loading"); 
+                //console.timeEnd("usersContant");
+
+                $(".contact-item-wrapper-btn").on("click", function(){
+                    console.log("contact-item-wrapper-btn", $(this));
+                });
             }
 
         });
@@ -534,11 +516,19 @@
             <div style="pointer-events: auto;">
             <div class="contact-list-container">
         `;
-        $.each(users_contants, function(idx,contact){
+        var len = users_contants.length;
+        var i = 0;
+        while (len--) {
+            var contact = users_contants[i];
             var user_img_url = ((contact.profilePic != "")?contact.profilePic:sessionStorage.getItem("userpic_" + contact.user_id))
             html += `
                 <div class="contact-item-wrapper">
-                    <button class="contact-item-wrapper-btn" type="button">`;
+                    <button class="contact-item-wrapper-btn" type="button" 
+                        data-isShowCheckbox="${showCheckBox}"
+                        data-userid="${contact.user_id}"
+                        data-userserialized="${contact.user_serialized}"
+                        data-isuser="${contact.isUser}"
+                    >`;
                 if(showCheckBox){
                     html += `<div class="contact-item-checkbox-wrapper">
                             <input class="contact-item-checkbox" type="checkbox" tabindex="-1">
@@ -601,13 +591,104 @@
                     </button>
                 </div>
             `; 
-        });
+
+            i++;
+        }
+            
         html += `
                         </div>
                     </div>
                 </div>`;
         return html;
     }
+
+    function getConentHtml(users_contants, title, toUpdate,isCheckbox ){
+        var conent_html;
+        var old_conent_html = sessionStorage.getItem("users_contants_html");
+        if(!toUpdate && old_conent_html != ""){
+            return old_conent_html;
+        }
+        conent_html = `
+            <div class="chat-modal-wrapper  copyable-area" data-testid="chat-modal">
+                <header class="chat-modal-header">
+                    <!--
+                    <div class="chat-modal-close">
+                        <button class="chat-modal-close-btn" aria-label="סגירה">
+                            <span data-testid="x" data-icon="x">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path fill="currentColor"
+                                        d="m19.1 17.2-5.3-5.3 5.3-5.3-1.8-1.8-5.3 5.4-5.3-5.3-1.8 1.7 5.3 5.3-5.3 5.3L6.7 19l5.3-5.3 5.3 5.3 1.8-1.8z">
+                                    </path>
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
+                    -->
+                    <div class="chat-modal-header-title">
+                        <h1 style="font-size: inherit;">${title}</h1>
+                    </div>
+                </header>
+                <!-- search area -->
+                <div class="chat-modal-search" tabindex="-1">
+                    <button class="chat-modal-search-btn" aria-label="חיפוש צ'אט או התחלת צ'אט חדש">
+                        <div class="chat-modal-search-btn-icons chat-modal-search-btn-icon-back">
+                            <span data-testid="back" data-icon="back">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path fill="currentColor" d="m12 4 1.4 1.4L7.8 11H20v2H7.8l5.6 5.6L12 20l-8-8 8-8z">
+                                    </path>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="chat-modal-search-btn-icons chat-modal-search-btn-icon-search">
+                            <span data-testid="search" data-icon="search">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path fill="currentColor"
+                                        d="M15.009 13.805h-.636l-.22-.219a5.184 5.184 0 0 0 1.256-3.386 5.207 5.207 0 1 0-5.207 5.208 5.183 5.183 0 0 0 3.385-1.255l.221.22v.635l4.004 3.999 1.194-1.195-3.997-4.007zm-4.808 0a3.605 3.605 0 1 1 0-7.21 3.605 3.605 0 0 1 0 7.21z">
+                                    </path>
+                                </svg>
+                            </span>
+                        </div>
+                    </button>
+                    <span></span>
+                    <div class="search-input-placeholder">חיפוש...</div>
+                    <label class="search-input-label">
+                        <div tabindex="-1" class="search-input-wrapper search-input-space">
+                            <div title="תיבת טקסט להזנת החיפוש" role="textbox"
+                                class="search-textbox-input copyable-text selectable-text" contenteditable="true"
+                                data-tab="3" dir="rtl">
+                            </div>
+                        </div>
+                    </label>
+                </div>`;
+        conent_html += createContentHtml(users_contants, isCheckbox);
+        conent_html += `
+            <!-- footer -->
+                <!--
+                <span class="send-to-footer">
+                    <div class="send-to-wrapper" style="transform: translateY(0%);">
+                        <span class="send-to-names-list">
+                            <span dir="auto" class="send-to-name-txt">Yes-watsapp</span>
+                        </span>
+                        <div data-animate-btn="true" class="send-to-btn-con" style="opacity: 1; transform: scale(1);">
+                            <div role="button" tabindex="0" class="send-to-btn">
+                                <span data-testid="send" data-icon="send" class="send-to-btn-icon">
+                                    <svg viewBox="0 0 24 24" width="24" height="24">
+                                        <path fill="currentColor"
+                                            d="M1.101 21.757 23.8 12.028 1.101 2.3l.011 7.912 13.623 1.816-13.623 1.817-.011 7.912z">
+                                        </path>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </span>
+                -->
+            </div>
+        `;
+        sessionStorage.setItem("users_contants_html", conent_html);
+        return conent_html;
+    }
+
     function getUsersContants(ret_func){
         //console.log("getUsersContants")
 
